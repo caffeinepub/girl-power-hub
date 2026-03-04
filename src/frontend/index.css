@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== FONT FACES ===== */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque[opsz,wdth,wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/assets/fonts/Outfit[wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree[wght].woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===== DESIGN TOKENS ===== */
+@layer base {
+  :root {
+    --radius: 1rem;
+
+    /* Girl Power Hub Color Palette */
+    /* Primary: Vibrant Pink */
+    --primary: 0.62 0.22 350;
+    --primary-foreground: 1 0 0;
+
+    /* Background: Warm white with slight warmth */
+    --background: 0.99 0.005 60;
+    --foreground: 0.18 0.04 320;
+
+    /* Card: Pure white with soft warmth */
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.04 320;
+
+    /* Popover */
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.04 320;
+
+    /* Secondary: Vibrant Purple */
+    --secondary: 0.94 0.05 310;
+    --secondary-foreground: 0.35 0.12 310;
+
+    /* Muted: Light lavender */
+    --muted: 0.95 0.03 295;
+    --muted-foreground: 0.5 0.06 300;
+
+    /* Accent: Vibrant Teal */
+    --accent: 0.92 0.07 195;
+    --accent-foreground: 0.25 0.1 195;
+
+    /* Destructive */
+    --destructive: 0.57 0.245 27;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Border */
+    --border: 0.88 0.04 310;
+    --input: 0.9 0.04 310;
+    --ring: 0.62 0.22 350;
+
+    /* Chart colors - vibrant girl power palette */
+    --chart-1: 0.62 0.22 350;
+    --chart-2: 0.55 0.18 295;
+    --chart-3: 0.7 0.15 195;
+    --chart-4: 0.82 0.18 95;
+    --chart-5: 0.65 0.2 25;
+
+    /* Sidebar */
+    --sidebar: 0.97 0.03 310;
+    --sidebar-foreground: 0.18 0.04 320;
+    --sidebar-primary: 0.62 0.22 350;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.92 0.07 195;
+    --sidebar-accent-foreground: 0.25 0.1 195;
+    --sidebar-border: 0.88 0.04 310;
+    --sidebar-ring: 0.62 0.22 350;
+
+    /* Custom girl-power tokens */
+    --pink: 0.62 0.22 350;
+    --pink-light: 0.92 0.08 350;
+    --pink-dark: 0.45 0.2 350;
+    --purple: 0.55 0.18 295;
+    --purple-light: 0.9 0.08 295;
+    --teal: 0.7 0.15 195;
+    --teal-light: 0.92 0.07 195;
+    --coral: 0.65 0.2 25;
+    --coral-light: 0.93 0.07 25;
+    --yellow: 0.88 0.18 95;
+    --yellow-light: 0.97 0.06 95;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Outfit", sans-serif;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+  }
+
+  p, li, span, label, input, textarea {
+    font-family: "Figtree", sans-serif;
+  }
+}
+
+/* ===== CUSTOM UTILITIES ===== */
+@layer utilities {
+  .bg-pink-gp {
+    background-color: oklch(var(--pink));
+  }
+  .bg-pink-light-gp {
+    background-color: oklch(var(--pink-light));
+  }
+  .bg-purple-gp {
+    background-color: oklch(var(--purple));
+  }
+  .bg-purple-light-gp {
+    background-color: oklch(var(--purple-light));
+  }
+  .bg-teal-gp {
+    background-color: oklch(var(--teal));
+  }
+  .bg-teal-light-gp {
+    background-color: oklch(var(--teal-light));
+  }
+  .bg-coral-gp {
+    background-color: oklch(var(--coral));
+  }
+  .bg-coral-light-gp {
+    background-color: oklch(var(--coral-light));
+  }
+  .bg-yellow-gp {
+    background-color: oklch(var(--yellow));
+  }
+  .bg-yellow-light-gp {
+    background-color: oklch(var(--yellow-light));
+  }
+  .text-pink-gp {
+    color: oklch(var(--pink));
+  }
+  .text-purple-gp {
+    color: oklch(var(--purple));
+  }
+  .text-teal-gp {
+    color: oklch(var(--teal));
+  }
+  .text-coral-gp {
+    color: oklch(var(--coral));
+  }
+  .text-yellow-gp {
+    color: oklch(var(--yellow));
+  }
+  .border-pink-gp {
+    border-color: oklch(var(--pink));
+  }
+  .border-purple-gp {
+    border-color: oklch(var(--purple));
+  }
+
+  .girl-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(var(--pink-light)) 0%,
+      oklch(var(--purple-light)) 35%,
+      oklch(var(--teal-light)) 65%,
+      oklch(var(--yellow-light)) 100%
+    );
+  }
+
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px oklch(var(--pink) / 0.18);
+  }
+
+  .section-badge {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  .breathe-ring {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      oklch(var(--pink-light)) 0%,
+      oklch(var(--purple-light)) 50%,
+      oklch(var(--teal-light)) 100%
+    );
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .spin-slow {
+    animation: spin 8s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(var(--purple-light));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--pink));
+    border-radius: 999px;
+  }
+}
