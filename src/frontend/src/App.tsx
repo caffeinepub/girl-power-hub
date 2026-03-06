@@ -148,6 +148,26 @@ import {
   IdeaBox,
 } from "@/components/sections/EmpowermentSection";
 
+// ===== Screen Time Imports =====
+import {
+  BedtimeWindDown,
+  BoredomBusterCards,
+  DoomScrollDetox,
+  FeelingsCheckIn,
+  GratitudeWalk,
+  GroundingExercise,
+  OutdoorAdventureList,
+  PhoneFreeChallenge,
+  PhoneJarGame,
+  PositiveFeedReset,
+  RealLifeScavengerHunt,
+  ScreenTimeTracker,
+  ScrollSwapChallenge,
+  SocialMediaBreakIdeas,
+  StretchBreakTimer,
+  UnplugAndDoodle,
+} from "@/components/sections/ScreenTimeSection";
+
 // ===== SECTION REGISTRY =====
 interface SectionItem {
   id: string;
@@ -816,6 +836,120 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Idea Box",
         emoji: "💡",
         component: IdeaBox,
+      },
+    ],
+  },
+  {
+    id: "get-off-phone",
+    label: "Get Off Your Phone",
+    emoji: "📵",
+    color: "bg-teal-light-gp",
+    badgeClass: "bg-teal-gp text-white",
+    items: [
+      {
+        id: "phone-free-challenge",
+        label: "Phone-Free Challenge",
+        emoji: "🏆",
+        component: PhoneFreeChallenge,
+      },
+      {
+        id: "phone-jar-game",
+        label: "Phone Jar Game",
+        emoji: "🫙",
+        component: PhoneJarGame,
+      },
+      {
+        id: "outdoor-adventure-list",
+        label: "Outdoor Adventures",
+        emoji: "🌳",
+        component: OutdoorAdventureList,
+      },
+      {
+        id: "boredom-buster-cards",
+        label: "Boredom Busters",
+        emoji: "🎴",
+        component: BoredomBusterCards,
+      },
+      {
+        id: "unplug-doodle",
+        label: "Unplug & Doodle",
+        emoji: "✏️",
+        component: UnplugAndDoodle,
+      },
+      {
+        id: "stretch-break-timer",
+        label: "Stretch Break Timer",
+        emoji: "🧘",
+        component: StretchBreakTimer,
+      },
+      {
+        id: "gratitude-walk",
+        label: "Gratitude Walk",
+        emoji: "🌸",
+        component: GratitudeWalk,
+      },
+      {
+        id: "real-life-scavenger-hunt",
+        label: "Real-Life Scavenger Hunt",
+        emoji: "🔍",
+        component: RealLifeScavengerHunt,
+      },
+    ],
+  },
+  {
+    id: "stop-doom-scrolling",
+    label: "Stop Doom Scrolling",
+    emoji: "🚫",
+    color: "bg-coral-light-gp",
+    badgeClass: "bg-coral-gp text-white",
+    items: [
+      {
+        id: "scroll-swap-challenge",
+        label: "Scroll Swap Challenge",
+        emoji: "🔄",
+        component: ScrollSwapChallenge,
+      },
+      {
+        id: "grounding-exercise",
+        label: "5-4-3-2-1 Grounding",
+        emoji: "🌿",
+        component: GroundingExercise,
+      },
+      {
+        id: "feelings-check-in",
+        label: "Feelings Check-In",
+        emoji: "💛",
+        component: FeelingsCheckIn,
+      },
+      {
+        id: "screen-time-tracker",
+        label: "Screen Time Tracker",
+        emoji: "📊",
+        component: ScreenTimeTracker,
+      },
+      {
+        id: "bedtime-wind-down",
+        label: "Bedtime Wind-Down",
+        emoji: "🌙",
+        component: BedtimeWindDown,
+      },
+      {
+        id: "doom-scroll-detox",
+        label: "7-Day Detox Plan",
+        emoji: "✨",
+        component: DoomScrollDetox,
+      },
+      {
+        id: "social-media-break",
+        label: "Social Media Break Ideas",
+        emoji: "💡",
+        component: SocialMediaBreakIdeas,
+      },
+      {
+        id: "positive-feed-reset",
+        label: "Positive Feed Reset",
+        emoji: "💖",
+        component: PositiveFeedReset,
       },
     ],
   },
