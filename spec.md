@@ -1,22 +1,24 @@
 # Girl Power Hub
 
 ## Current State
-A large empowerment website for girls with many categories (Wellness, Journaling, Games, Science, Crafts, Nature, History, Life Skills, Recipes, More Fun, Empowerment). Each category has clickable section cards that open an interactive activity component.
+The app has 13 section categories, each with 10-20 interactive activities. Categories include Wellness, Journaling, Games, Science, Crafts, Nature, History, Life Skills, Recipes, More Fun, Empowerment, Get Off Your Phone, and Stop Doom Scrolling.
 
 ## Requested Changes (Diff)
 
 ### Add
-- A new category: **Get Off Your Phone** -- activities and challenges to help girls put down their phone and enjoy real life. Fun, age-appropriate ideas.
-- A new category: **Stop Doom Scrolling** -- tips, activities, and games specifically designed to break the doom-scrolling habit and replace it with healthy alternatives.
-- New section components for each category in a new file: `src/frontend/src/components/sections/ScreenTimeSection.tsx`
+- A new section category called "Mindset & Growth" with 5 interactive activities:
+  1. **Growth Mindset Quiz** - Interactive quiz about having a growth mindset vs fixed mindset with explanations
+  2. **Affirmation Generator** - Generates daily positive affirmations the user can save/copy
+  3. **Fear Crusher** - Name a fear, get tips and brave-girl stories to face it
+  4. **Mistake Journal** - Log a mistake and reframe it as a learning moment
+  5. **Power Words Wall** - Build a personal collection of words that make you feel powerful
 
 ### Modify
-- `App.tsx` -- import and register the two new categories and their section items in SECTION_CATEGORIES.
+- App.tsx: Import the new MindsetSection components and add the new category to SECTION_CATEGORIES
 
 ### Remove
-- Nothing removed.
+- Nothing removed
 
 ## Implementation Plan
-1. Create `ScreenTimeSection.tsx` with components for "Get Off Your Phone" category items (e.g., Phone-Free Challenge, Phone Jar Game, Outdoor Adventure List, Boredom Buster Cards, Unplug & Doodle, Stretch Break Timer, Gratitude Walk, Real-Life Scavenger Hunt, etc.)
-2. Add components for "Stop Doom Scrolling" category items (e.g., Scroll Swap Challenge, 5-4-3-2-1 Grounding, Feelings Check-In, Positive Feed Reset, Screen Time Tracker, Bedtime Wind-Down, Doom Scroll Detox Plan, Social Media Break Ideas, etc.)
-3. Update `App.tsx` to import all new components and register both new SECTION_CATEGORIES entries with their items.
+1. Create `/src/frontend/src/components/sections/MindsetSection.tsx` with 5 exported components
+2. Update `App.tsx` to import the new components and add the new category entry

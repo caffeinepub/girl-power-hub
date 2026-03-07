@@ -854,6 +854,95 @@ const EARTH_CHALLENGES = [
   },
 ];
 
+// ===== EARTH DAY ACTIVITIES =====
+const EARTH_DAY_ACTIVITIES = [
+  "🌱 Plant a seed or seedling in your yard or a pot",
+  "🗑️ Pick up 10 pieces of litter in your neighborhood",
+  "♻️ Sort all recyclables at home and explain to family why it matters",
+  "💧 Fix a dripping tap — 1 drop per second = 3,000 gallons a year!",
+  "💡 Switch to LED bulbs in one room of your house",
+  "🛍️ Use reusable bags instead of plastic bags all week",
+  "🚿 Cut your shower time by 2 minutes to save water",
+  "🌍 Learn about one endangered animal and share 3 facts with a friend",
+  "🌿 Start a compost bin with kitchen scraps",
+  "🎨 Make art from recycled materials — give trash a second life!",
+  "📚 Read a book about the environment or a nature explorer",
+  "🐝 Plant bee-friendly flowers like lavender or sunflowers",
+  "🚴 Walk or bike instead of getting a car ride today",
+  "🌊 Learn about ocean plastic pollution and one way to help",
+  "🏞️ Visit a park, garden, or nature trail and appreciate it!",
+];
+
+export function EarthDayActivities() {
+  const [checked, setChecked] = useState<boolean[]>(
+    new Array(EARTH_DAY_ACTIVITIES.length).fill(false),
+  );
+  const done = checked.filter(Boolean).length;
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="font-display text-2xl text-teal-gp font-bold">
+          Earth Day Activities 🌍
+        </h3>
+        <Badge className="bg-teal-gp text-white">
+          {done}/{EARTH_DAY_ACTIVITIES.length} done!
+        </Badge>
+      </div>
+      <p className="text-muted-foreground">
+        Every day can be Earth Day! Check off these activities to be an
+        environmental hero. 🌱
+      </p>
+      <div className="bg-teal-light-gp rounded-full h-3">
+        <div
+          className="bg-teal-gp h-3 rounded-full transition-all duration-500"
+          style={{ width: `${(done / EARTH_DAY_ACTIVITIES.length) * 100}%` }}
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        {EARTH_DAY_ACTIVITIES.map((act, i) => (
+          <button
+            key={act}
+            type="button"
+            className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all text-left w-full ${checked[i] ? "bg-teal-light-gp border-teal-gp" : "border-border hover:border-teal-gp"}`}
+            onClick={() =>
+              setChecked((prev) => {
+                const n = [...prev];
+                n[i] = !n[i];
+                return n;
+              })
+            }
+            data-ocid={`earthday.checkbox.${i + 1}`}
+          >
+            <Checkbox
+              checked={checked[i]}
+              className="border-teal-gp data-[state=checked]:bg-teal-gp shrink-0"
+            />
+            <span
+              className={`text-sm ${checked[i] ? "line-through text-muted-foreground" : ""}`}
+            >
+              {act}
+            </span>
+          </button>
+        ))}
+      </div>
+      {done === EARTH_DAY_ACTIVITIES.length && (
+        <Card
+          className="bg-yellow-light-gp border-none text-center"
+          data-ocid="earthday.success_state"
+        >
+          <CardContent className="p-6">
+            <div className="text-4xl mb-2">🌍🏆</div>
+            <p className="font-display text-xl font-bold text-yellow-gp">
+              Earth Hero Unlocked! The planet loves you! 💚
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 export function NatureExplorers() {
   const [completed, setCompleted] = useState<boolean[]>(
     new Array(EARTH_CHALLENGES.length).fill(false),

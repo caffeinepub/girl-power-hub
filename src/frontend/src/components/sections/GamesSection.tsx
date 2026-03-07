@@ -869,5 +869,529 @@ export function DetectiveCodes() {
   );
 }
 
+// ===== WORD SEARCH =====
+const WORD_SEARCH_WORDS = [
+  "BRAVE",
+  "STRONG",
+  "KIND",
+  "SMART",
+  "FIERCE",
+  "BOLD",
+  "DREAM",
+  "SHINE",
+];
+function makeWordSearchGrid(
+  words: string[],
+  size = 10,
+): { grid: string[][]; placed: { word: string; cells: [number, number][] }[] } {
+  const grid: string[][] = Array.from({ length: size }, () =>
+    Array(size).fill(""),
+  );
+  const placed: { word: string; cells: [number, number][] }[] = [];
+  const dirs = [
+    [0, 1],
+    [1, 0],
+    [1, 1],
+    [0, -1],
+    [-1, 0],
+    [-1, -1],
+    [1, -1],
+    [-1, 1],
+  ];
+  for (const word of words) {
+    let attempts = 0;
+    while (attempts < 100) {
+      const dir = dirs[Math.floor(Math.random() * dirs.length)];
+      const r = Math.floor(Math.random() * size);
+      const c = Math.floor(Math.random() * size);
+      const cells: [number, number][] = [];
+      let fits = true;
+      for (let i = 0; i < word.length; i++) {
+        const nr = r + dir[0] * i;
+        const nc = c + dir[1] * i;
+        if (nr < 0 || nr >= size || nc < 0 || nc >= size) {
+          fits = false;
+          break;
+        }
+        if (grid[nr][nc] !== "" && grid[nr][nc] !== word[i]) {
+          fits = false;
+          break;
+        }
+        cells.push([nr, nc]);
+      }
+      if (fits) {
+        cells.forEach(([nr, nc], i) => {
+          grid[nr][nc] = word[i];
+        });
+        placed.push({ word, cells });
+        break;
+      }
+      attempts++;
+    }
+  }
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for (let r = 0; r < size; r++)
+    for (let c = 0; c < size; c++)
+      if (!grid[r][c]) grid[r][c] = letters[Math.floor(Math.random() * 26)];
+  return { grid, placed };
+}
+
+export function WordSearch() {
+  const [{ grid, placed }] = useState(() =>
+    makeWordSearchGrid(WORD_SEARCH_WORDS),
+  );
+  const [found, setFound] = useState<string[]>([]);
+  const [selecting, setSelecting] = useState<[number, number][]>([]);
+  const [mouse, setMouse] = useState(false);
+
+  const handleCellMouseDown = (r: number, c: number) => {
+    setMouse(true);
+    setSelecting([[r, c]]);
+  };
+  const handleCellMouseEnter = (r: number, c: number) => {
+    if (mouse) setSelecting((prev) => [...prev, [r, c]]);
+  };
+  const handleMouseUp = () => {
+    setMouse(false);
+    const selStr = selecting.map(([r, c]) => grid[r][c]).join("");
+    const selStrRev = [...selStr].reverse().join("");
+    for (const { word, cells } of placed) {
+      const cellStr = cells.map(([r, c]) => grid[r][c]).join("");
+      if (
+        (selStr === cellStr || selStrRev === cellStr) &&
+        selecting.length === word.length &&
+        !found.includes(word)
+      ) {
+        const matchCells =
+          selecting.length === cells.length &&
+          cells.every(
+            ([r, c], i) => selecting[i]?.[0] === r && selecting[i]?.[1] === c,
+          );
+        const matchRev =
+          selecting.length === cells.length &&
+          [...cells]
+            .reverse()
+            .every(
+              ([r, c], i) => selecting[i]?.[0] === r && selecting[i]?.[1] === c,
+            );
+        if (matchCells || matchRev) {
+          setFound((prev) => [...prev, word]);
+          break;
+        }
+      }
+    }
+    setSelecting([]);
+  };
+
+  const isFound = (r: number, c: number) =>
+    placed.some(
+      ({ word, cells }) =>
+        found.includes(word) && cells.some(([cr, cc]) => cr === r && cc === c),
+    );
+  const isSelecting = (r: number, c: number) =>
+    selecting.some(([sr, sc]) => sr === r && sc === c);
+
+  return (
+    <div className="flex flex-col gap-4 py-2" onMouseUp={handleMouseUp}>
+      <h3 className="font-display text-2xl text-pink-gp font-bold">
+        Word Search 🔤
+      </h3>
+      <p className="text-muted-foreground">
+        Find all the girl-power words hidden in the grid!
+      </p>
+      <div className="flex flex-wrap gap-2 mb-2">
+        {WORD_SEARCH_WORDS.map((w) => (
+          <Badge
+            key={w}
+            className={
+              found.includes(w)
+                ? "bg-teal-gp text-white line-through"
+                : "bg-pink-light-gp text-pink-gp"
+            }
+          >
+            {w}
+          </Badge>
+        ))}
+      </div>
+      <div className="overflow-x-auto">
+        <div
+          className="inline-grid select-none"
+          style={{ gridTemplateColumns: "repeat(10, 2.25rem)", gap: "2px" }}
+        >
+          {grid.map((row, r) =>
+            row.map((letter, c) => (
+              <button
+                key={`cell-${r * 100 + c}`}
+                type="button"
+                onMouseDown={() => handleCellMouseDown(r, c)}
+                onMouseEnter={() => handleCellMouseEnter(r, c)}
+                className={`w-9 h-9 text-xs font-bold rounded flex items-center justify-center border transition-colors select-none ${isFound(r, c) ? "bg-teal-gp text-white border-teal-gp" : isSelecting(r, c) ? "bg-pink-gp text-white border-pink-gp" : "border-border hover:bg-pink-light-gp"}`}
+                data-ocid={`wordsearch.item.${r * 10 + c + 1}`}
+              >
+                {letter}
+              </button>
+            )),
+          )}
+        </div>
+      </div>
+      {found.length === WORD_SEARCH_WORDS.length && (
+        <Card
+          className="bg-teal-light-gp border-none text-center"
+          data-ocid="wordsearch.success_state"
+        >
+          <CardContent className="p-6">
+            <div className="text-4xl mb-2">🏆</div>
+            <p className="font-display text-xl font-bold text-teal-gp">
+              You found all the words! Girl power! 🌟
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ===== EMOJI STORY =====
+const EMOJI_PROMPTS = [
+  {
+    emojis: "🌧️👧🌈🦋",
+    translation:
+      "A girl cried, but after the rain came a rainbow, and she turned into something beautiful.",
+  },
+  {
+    emojis: "📚💡🚀⭐",
+    translation:
+      "She studied hard, had a brilliant idea, and launched herself to the stars.",
+  },
+  {
+    emojis: "🤝💔🌱❤️",
+    translation:
+      "Two friends had a falling out, but with time and care, love grew back stronger.",
+  },
+  {
+    emojis: "🏔️😰💪🏆",
+    translation:
+      "The mountain was scary, but she was brave and strong, and she won the challenge.",
+  },
+  {
+    emojis: "🌙✨🔮🦄",
+    translation:
+      "Under the moonlight, magic sparkled, and unicorn dreams came true.",
+  },
+];
+
+export function EmojiStory() {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [story, setStory] = useState("");
+  const [revealed, setRevealed] = useState(false);
+  const [userStories, setUserStories] = useState<
+    { emojis: string; story: string }[]
+  >([]);
+
+  const submit = () => {
+    if (!story.trim()) {
+      return;
+    }
+    setUserStories((prev) => [
+      { emojis: EMOJI_PROMPTS[currentIdx].emojis, story: story.trim() },
+      ...prev.slice(0, 4),
+    ]);
+    setStory("");
+    setRevealed(false);
+    setCurrentIdx((p) => (p + 1) % EMOJI_PROMPTS.length);
+  };
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-purple-gp font-bold">
+        Emoji Story 🌟
+      </h3>
+      <p className="text-muted-foreground">
+        Read the emoji sequence and write your interpretation, then compare with
+        ours!
+      </p>
+      <Card className="border-2 border-purple-gp">
+        <CardContent className="p-6 text-center">
+          <div className="text-5xl tracking-widest mb-4">
+            {EMOJI_PROMPTS[currentIdx].emojis}
+          </div>
+          <Textarea
+            placeholder="What story do these emojis tell you? Write it out..."
+            value={story}
+            onChange={(e) => setStory(e.target.value)}
+            rows={3}
+            className="resize-none mb-3"
+            data-ocid="emojistory.textarea"
+          />
+          <div className="flex gap-2 justify-center flex-wrap">
+            <Button
+              onClick={() => setRevealed(!revealed)}
+              variant="outline"
+              className="rounded-full border-purple-gp text-purple-gp"
+              data-ocid="emojistory.toggle"
+            >
+              {revealed ? "Hide Our Story 🙈" : "See Our Story 👀"}
+            </Button>
+            <Button
+              onClick={submit}
+              disabled={!story.trim()}
+              className="bg-purple-gp text-white rounded-full"
+              data-ocid="emojistory.primary_button"
+            >
+              Next Emoji Story ➡️
+            </Button>
+          </div>
+          {revealed && (
+            <div className="mt-3 p-3 bg-purple-light-gp rounded-xl text-sm italic text-foreground">
+              📖 {EMOJI_PROMPTS[currentIdx].translation}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      {userStories.length > 0 && (
+        <div>
+          <h4 className="font-display font-bold text-muted-foreground text-sm uppercase tracking-wider mb-3">
+            Your Stories
+          </h4>
+          {userStories.map((s, i) => (
+            <Card
+              key={`${s.emojis}-${i}`}
+              className="mb-2 border-border"
+              data-ocid={`emojistory.item.${i + 1}`}
+            >
+              <CardContent className="p-3">
+                <p className="text-xl mb-1">{s.emojis}</p>
+                <p className="text-sm text-muted-foreground">{s.story}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ===== RIDDLE CHALLENGE =====
+const RIDDLES_CHALLENGE = [
+  {
+    q: "I have keys but no locks. I have space but no room. You can enter but can't go inside. What am I?",
+    a: "A keyboard! ⌨️",
+  },
+  {
+    q: "The more you take, the more you leave behind. What am I?",
+    a: "Footsteps! 👣",
+  },
+  {
+    q: "I speak without a mouth and hear without ears. I have no body but come alive with wind. What am I?",
+    a: "An echo! 🔊",
+  },
+  { q: "What gets wetter as it dries?", a: "A towel! 🏖️" },
+  { q: "What has hands but can't clap?", a: "A clock! ⏰" },
+  {
+    q: "I can fly without wings. I can cry without eyes. Wherever I go, darkness flies. What am I?",
+    a: "A cloud! ☁️",
+  },
+  {
+    q: "What has cities, but no houses live there; mountains, but no trees grow there; water, but no fish swim there?",
+    a: "A map! 🗺️",
+  },
+  {
+    q: "The more you have of it, the less you see. What is it?",
+    a: "Darkness! 🌙",
+  },
+  {
+    q: "What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?",
+    a: "A river! 🌊",
+  },
+  {
+    q: "I'm tall when I'm young, and short when I'm old. What am I?",
+    a: "A candle! 🕯️",
+  },
+];
+
+export function RiddleChallenge() {
+  const [revealed, setRevealed] = useState<boolean[]>(
+    new Array(RIDDLES_CHALLENGE.length).fill(false),
+  );
+  const [score, setScore] = useState(0);
+
+  const reveal = (i: number) => {
+    if (!revealed[i]) {
+      setRevealed((prev) => {
+        const n = [...prev];
+        n[i] = true;
+        return n;
+      });
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <div className="flex items-center justify-between">
+        <h3 className="font-display text-2xl text-yellow-gp font-bold">
+          Riddle Challenge 🤔
+        </h3>
+        <Badge className="bg-yellow-gp text-foreground">
+          Score: {score}/{RIDDLES_CHALLENGE.length}
+        </Badge>
+      </div>
+      <div className="grid gap-3">
+        {RIDDLES_CHALLENGE.map((riddle, i) => (
+          <Card
+            key={riddle.q.slice(0, 20)}
+            className={`border-2 ${revealed[i] ? "border-teal-gp bg-teal-light-gp" : "border-yellow-light-gp"}`}
+            data-ocid={`riddle.item.${i + 1}`}
+          >
+            <CardContent className="p-4">
+              <p className="font-bold text-sm mb-2">🤔 {riddle.q}</p>
+              {revealed[i] ? (
+                <p className="text-sm text-teal-gp font-bold">✅ {riddle.a}</p>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    className="bg-yellow-gp text-foreground rounded-full"
+                    onClick={() => {
+                      reveal(i);
+                      setScore((s) => s + 1);
+                    }}
+                    data-ocid={`riddle.button.${i + 1}`}
+                  >
+                    Got it! +1 ⭐
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-yellow-gp text-yellow-gp rounded-full"
+                    onClick={() => reveal(i)}
+                    data-ocid={`riddle.toggle.${i + 1}`}
+                  >
+                    Show Answer
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      {score >= 8 && (
+        <Card
+          className="bg-yellow-light-gp border-none text-center"
+          data-ocid="riddle.success_state"
+        >
+          <CardContent className="p-6">
+            <div className="text-4xl mb-2">🧠</div>
+            <p className="font-display text-xl font-bold text-yellow-gp">
+              Riddle Master! You're a genius! 🌟
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ===== COLOR BY NUMBER =====
+const PALETTE = [
+  "#FF9EBB",
+  "#B57BFF",
+  "#5ECFCA",
+  "#FFD93D",
+  "#FF6B6B",
+  "#4CAF50",
+  "#FF9800",
+  "#FFFFFF",
+];
+const GRID_SIZE = 12;
+const COLOR_NUMBERS: number[][] = Array.from({ length: GRID_SIZE }, (_, r) =>
+  Array.from({ length: GRID_SIZE }, (_, c) => {
+    const cx = c - GRID_SIZE / 2;
+    const cy = r - GRID_SIZE / 2;
+    const dist = Math.sqrt(cx * cx + cy * cy);
+    if (dist < 2) return 0;
+    if (dist < 4) return 2;
+    if (dist < 6) return 1;
+    return 3 + ((r + c) % 5);
+  }),
+);
+
+export function ColorByNumber() {
+  const [colored, setColored] = useState<Record<string, string>>({});
+  const [active, setActive] = useState(0);
+
+  const paint = (r: number, c: number) =>
+    setColored((prev) => ({ ...prev, [`${r}-${c}`]: PALETTE[active] }));
+  const clear = () => setColored({});
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <div className="flex items-center justify-between">
+        <h3 className="font-display text-2xl text-pink-gp font-bold">
+          Color by Number 🎨
+        </h3>
+        <Button
+          size="sm"
+          variant="outline"
+          className="rounded-full border-pink-gp text-pink-gp"
+          onClick={clear}
+          data-ocid="colorbynumber.secondary_button"
+        >
+          Clear 🗑️
+        </Button>
+      </div>
+      <p className="text-muted-foreground">
+        Pick a color then click cells to paint your picture!
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {PALETTE.map((color, i) => (
+          <button
+            key={color}
+            type="button"
+            onClick={() => setActive(i)}
+            className={`w-8 h-8 rounded-full border-4 transition-transform ${active === i ? "scale-125 border-foreground" : "border-transparent hover:scale-110"}`}
+            style={{ backgroundColor: color }}
+            data-ocid="colorbynumber.toggle"
+          />
+        ))}
+      </div>
+      <div className="overflow-x-auto">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${String(GRID_SIZE)}, 1.75rem)`,
+            gap: "1px",
+          }}
+        >
+          {COLOR_NUMBERS.map((row, r) =>
+            row.map((num, c) => (
+              <button
+                key={`cell-${r * 100 + c}`}
+                type="button"
+                onClick={() => paint(r, c)}
+                className="w-7 h-7 border border-border/30 rounded-sm flex items-center justify-center text-[8px] font-bold text-muted-foreground hover:opacity-80 transition-opacity"
+                style={{ backgroundColor: colored[`${r}-${c}`] || "#f5f5f5" }}
+                data-ocid="colorbynumber.canvas_target"
+              >
+                {!colored[`${r}-${c}`] ? num : ""}
+              </button>
+            )),
+          )}
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {PALETTE.map((color, i) => (
+          <div key={color} className="flex items-center gap-1 text-xs">
+            <div
+              className="w-4 h-4 rounded border border-border"
+              style={{ backgroundColor: color }}
+            />
+            <span>{i}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Lazy import Textarea for use in this file
 import { Textarea } from "@/components/ui/textarea";

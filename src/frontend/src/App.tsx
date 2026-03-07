@@ -27,26 +27,43 @@ import {
 
 // ===== Journal Imports =====
 import {
+  ArtJournaling,
+  DreamDiary,
+  GratitudeJournal,
   JournalSection,
   JournalingIdeas,
+  LetterToFutureSelf,
+  MoodTracker,
+  PoetryCorner,
+  SecretDiaryPrompts,
   WritingFairyTales,
 } from "@/components/sections/JournalSection";
 
 // ===== Games Imports =====
 import {
   BrainGames,
+  ColorByNumber,
   DetectiveCodes,
+  EmojiStory,
   FutureCareerQuiz,
   MadLibsGame,
   MatchingGame,
+  RiddleChallenge,
   TriviaGame,
+  WordSearch,
 } from "@/components/sections/GamesSection";
 
 // ===== Science Imports =====
 import {
+  BakingSodaVolcano,
   DinosaurDig,
+  GrowCrystals,
+  InvisibleInk,
+  MagicMilkExperiment,
   PrincessScience,
+  RainInAGlass,
   ScienceMagic,
+  SlimeLab,
   SpaceSchool,
 } from "@/components/sections/ScienceSection";
 
@@ -73,17 +90,22 @@ import {
 // ===== History Imports =====
 import {
   AsianHeritageMonth,
+  BlackHistoryMonth,
+  CommunityService,
   DreamJobsSection,
+  EarthDayHistory,
   GirlHeroHistory,
   HeroInterviews,
   RealGirlsWhoRock,
   WallOfFame,
+  WomensHistoryMonth,
 } from "@/components/sections/HistorySection";
 
 // ===== Nature Imports =====
 import {
   BirdWatching,
   DreamHouseDesign,
+  EarthDayActivities,
   LeafRubbings,
   MiniGarden,
   NatureExplorers,
@@ -113,9 +135,13 @@ import {
 import {
   BakingBoss,
   BakingCookies,
+  EnergyBites,
   FancyTeaParty,
+  HealthySmoothieBowls,
   HealthySnackHacks,
   MagicPotions,
+  MovieNightSnacks,
+  NoGlutenRecipes,
   RecipesSection,
 } from "@/components/sections/RecipesSection";
 
@@ -124,8 +150,10 @@ import {
   BackyardCamping,
   BookClub,
   BookNook,
+  DancePartyPlaylist,
   FacePainting,
   FashionFun,
+  GirlScoutMagic,
   LearningSignLanguage,
   MagicTricks,
   MiniOlympics,
@@ -143,21 +171,41 @@ import {
 
 // ===== Empowerment Imports =====
 import {
+  ArtJournalEmpowerment,
+  CommunityChallenge,
   DailyHighFives,
+  FashionForChange,
   FutureLeaders,
+  GirlPowerWallOfFame,
+  GoalTracker,
   IdeaBox,
+  SpeakUp,
+  VisionBoardBuilder,
 } from "@/components/sections/EmpowermentSection";
+
+// ===== Mindset Imports =====
+import {
+  AffirmationGenerator,
+  FearCrusher,
+  GrowthMindsetQuiz,
+  MistakeJournal,
+  PowerWordsWall,
+} from "@/components/sections/MindsetSection";
 
 // ===== Screen Time Imports =====
 import {
   BedtimeWindDown,
   BoredomBusterCards,
+  DigitalDetoxPlan,
   DoomScrollDetox,
   FeelingsCheckIn,
   GratitudeWalk,
   GroundingExercise,
+  MindfulScrollingQuiz,
+  NaturePhotoChallenge,
   OutdoorAdventureList,
   PhoneFreeChallenge,
+  PhoneFreeHobbies,
   PhoneJarGame,
   PositiveFeedReset,
   RealLifeScavengerHunt,
@@ -286,6 +334,48 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "🧚‍♀️",
         component: WritingFairyTales,
       },
+      {
+        id: "gratitude-journal",
+        label: "Gratitude Journal",
+        emoji: "🙏",
+        component: GratitudeJournal,
+      },
+      {
+        id: "dream-diary",
+        label: "Dream Diary",
+        emoji: "🌙",
+        component: DreamDiary,
+      },
+      {
+        id: "letter-future-self",
+        label: "Letter to Future Self",
+        emoji: "💌",
+        component: LetterToFutureSelf,
+      },
+      {
+        id: "mood-tracker",
+        label: "Mood Tracker",
+        emoji: "🌈",
+        component: MoodTracker,
+      },
+      {
+        id: "poetry-corner",
+        label: "Poetry Corner",
+        emoji: "✍️",
+        component: PoetryCorner,
+      },
+      {
+        id: "secret-diary-prompts",
+        label: "Secret Diary Prompts",
+        emoji: "📔",
+        component: SecretDiaryPrompts,
+      },
+      {
+        id: "art-journaling",
+        label: "Art Journaling",
+        emoji: "🎨",
+        component: ArtJournaling,
+      },
     ],
   },
   {
@@ -331,6 +421,30 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "🔍",
         component: DetectiveCodes,
       },
+      {
+        id: "word-search",
+        label: "Word Search",
+        emoji: "🔤",
+        component: WordSearch,
+      },
+      {
+        id: "emoji-story",
+        label: "Emoji Story",
+        emoji: "😄",
+        component: EmojiStory,
+      },
+      {
+        id: "riddle-challenge",
+        label: "Riddle Challenge",
+        emoji: "🤔",
+        component: RiddleChallenge,
+      },
+      {
+        id: "color-by-number",
+        label: "Color By Number",
+        emoji: "🎨",
+        component: ColorByNumber,
+      },
     ],
   },
   {
@@ -363,6 +477,42 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Dinosaur Dig",
         emoji: "🦴",
         component: DinosaurDig,
+      },
+      {
+        id: "slime-lab",
+        label: "Slime Lab",
+        emoji: "🟢",
+        component: SlimeLab,
+      },
+      {
+        id: "baking-soda-volcano",
+        label: "Baking Soda Volcano",
+        emoji: "🌋",
+        component: BakingSodaVolcano,
+      },
+      {
+        id: "magic-milk",
+        label: "Magic Milk Experiment",
+        emoji: "🥛",
+        component: MagicMilkExperiment,
+      },
+      {
+        id: "rain-in-glass",
+        label: "Rain in a Glass",
+        emoji: "☁️",
+        component: RainInAGlass,
+      },
+      {
+        id: "grow-crystals",
+        label: "Grow Crystals",
+        emoji: "💎",
+        component: GrowCrystals,
+      },
+      {
+        id: "invisible-ink",
+        label: "Invisible Ink",
+        emoji: "✉️",
+        component: InvisibleInk,
       },
     ],
   },
@@ -532,6 +682,12 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "🐼",
         component: NatureExplorers,
       },
+      {
+        id: "earth-day-activities",
+        label: "Earth Day Activities",
+        emoji: "🌍",
+        component: EarthDayActivities,
+      },
     ],
   },
   {
@@ -576,6 +732,30 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Hero Interviews",
         emoji: "🎤",
         component: HeroInterviews,
+      },
+      {
+        id: "earth-day-history",
+        label: "Earth Day History",
+        emoji: "🌱",
+        component: EarthDayHistory,
+      },
+      {
+        id: "womens-history-month",
+        label: "Women's History Month",
+        emoji: "♀️",
+        component: WomensHistoryMonth,
+      },
+      {
+        id: "black-history-month",
+        label: "Black History Month",
+        emoji: "✊",
+        component: BlackHistoryMonth,
+      },
+      {
+        id: "community-service",
+        label: "Community Service",
+        emoji: "🤝",
+        component: CommunityService,
       },
     ],
   },
@@ -703,6 +883,30 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "🍪",
         component: BakingBoss,
       },
+      {
+        id: "healthy-smoothie-bowls",
+        label: "Healthy Smoothie Bowls",
+        emoji: "🍓",
+        component: HealthySmoothieBowls,
+      },
+      {
+        id: "movie-night-snacks",
+        label: "Movie Night Snacks",
+        emoji: "🍿",
+        component: MovieNightSnacks,
+      },
+      {
+        id: "no-gluten-recipes",
+        label: "Gluten-Free Recipes",
+        emoji: "🌾",
+        component: NoGlutenRecipes,
+      },
+      {
+        id: "energy-bites",
+        label: "Energy Bites",
+        emoji: "⚡",
+        component: EnergyBites,
+      },
     ],
   },
   {
@@ -810,6 +1014,18 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "📚",
         component: BookNook,
       },
+      {
+        id: "dance-party-playlist",
+        label: "Dance Party Playlist",
+        emoji: "💃",
+        component: DancePartyPlaylist,
+      },
+      {
+        id: "girl-scout-magic",
+        label: "Girl Scout Magic",
+        emoji: "🏅",
+        component: GirlScoutMagic,
+      },
     ],
   },
   {
@@ -836,6 +1052,48 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Idea Box",
         emoji: "💡",
         component: IdeaBox,
+      },
+      {
+        id: "girl-power-wall-of-fame",
+        label: "Girl Power Wall of Fame",
+        emoji: "🌟",
+        component: GirlPowerWallOfFame,
+      },
+      {
+        id: "vision-board-builder",
+        label: "Vision Board Builder",
+        emoji: "✨",
+        component: VisionBoardBuilder,
+      },
+      {
+        id: "goal-tracker",
+        label: "Goal Tracker",
+        emoji: "🎯",
+        component: GoalTracker,
+      },
+      {
+        id: "community-challenge",
+        label: "Community Challenge",
+        emoji: "🤝",
+        component: CommunityChallenge,
+      },
+      {
+        id: "speak-up",
+        label: "Speak Up!",
+        emoji: "📢",
+        component: SpeakUp,
+      },
+      {
+        id: "fashion-for-change",
+        label: "Fashion for Change",
+        emoji: "👗",
+        component: FashionForChange,
+      },
+      {
+        id: "art-journal-empowerment",
+        label: "Art Journal",
+        emoji: "🖌️",
+        component: ArtJournalEmpowerment,
       },
     ],
   },
@@ -894,6 +1152,18 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         emoji: "🔍",
         component: RealLifeScavengerHunt,
       },
+      {
+        id: "nature-photo-challenge",
+        label: "Nature Photo Challenge",
+        emoji: "📸",
+        component: NaturePhotoChallenge,
+      },
+      {
+        id: "phone-free-hobbies",
+        label: "Phone-Free Hobbies",
+        emoji: "🌟",
+        component: PhoneFreeHobbies,
+      },
     ],
   },
   {
@@ -950,6 +1220,57 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Positive Feed Reset",
         emoji: "💖",
         component: PositiveFeedReset,
+      },
+      {
+        id: "digital-detox-plan",
+        label: "Digital Detox Plan",
+        emoji: "🌿",
+        component: DigitalDetoxPlan,
+      },
+      {
+        id: "mindful-scrolling-quiz",
+        label: "Mindful Scrolling Quiz",
+        emoji: "📱",
+        component: MindfulScrollingQuiz,
+      },
+    ],
+  },
+  {
+    id: "mindset-growth",
+    label: "Mindset & Growth",
+    emoji: "🌱",
+    color: "bg-teal-light-gp",
+    badgeClass: "bg-teal-gp text-white",
+    items: [
+      {
+        id: "growth-mindset-quiz",
+        label: "Growth Mindset Quiz",
+        emoji: "🧠",
+        component: GrowthMindsetQuiz,
+      },
+      {
+        id: "affirmation-generator",
+        label: "Affirmation Generator",
+        emoji: "✨",
+        component: AffirmationGenerator,
+      },
+      {
+        id: "fear-crusher",
+        label: "Fear Crusher",
+        emoji: "💪",
+        component: FearCrusher,
+      },
+      {
+        id: "mistake-journal",
+        label: "Mistake Journal",
+        emoji: "📖",
+        component: MistakeJournal,
+      },
+      {
+        id: "power-words-wall",
+        label: "Power Words Wall",
+        emoji: "🌟",
+        component: PowerWordsWall,
       },
     ],
   },

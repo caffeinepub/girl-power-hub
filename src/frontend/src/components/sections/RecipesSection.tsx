@@ -749,6 +749,581 @@ const HEALTHY_RECIPES = [
   },
 ];
 
+// ===== HEALTHY SMOOTHIE BOWLS =====
+const SMOOTHIE_BOWLS = [
+  {
+    name: "Tropical Sunrise 🌅",
+    emoji: "🌅",
+    base: [
+      "1 frozen mango",
+      "1/2 frozen banana",
+      "1/4 cup coconut milk",
+      "1 tsp turmeric",
+    ],
+    toppings: [
+      "Granola",
+      "Fresh pineapple",
+      "Coconut flakes",
+      "Chia seeds",
+      "Honey drizzle",
+    ],
+  },
+  {
+    name: "Berry Blast 🫐",
+    emoji: "🫐",
+    base: [
+      "1 cup frozen mixed berries",
+      "1/2 frozen banana",
+      "1/4 cup almond milk",
+      "1 tsp honey",
+    ],
+    toppings: [
+      "Fresh blueberries",
+      "Sliced strawberries",
+      "Granola",
+      "Mint leaves",
+      "Bee pollen",
+    ],
+  },
+  {
+    name: "Green Power 💚",
+    emoji: "💚",
+    base: [
+      "1 frozen banana",
+      "1/2 cup spinach",
+      "1/4 cup frozen pineapple",
+      "1/4 cup coconut water",
+    ],
+    toppings: [
+      "Sliced kiwi",
+      "Hemp seeds",
+      "Pumpkin seeds",
+      "Honey",
+      "Shredded coconut",
+    ],
+  },
+  {
+    name: "Pitaya Princess 🩷",
+    emoji: "🩷",
+    base: [
+      "1 packet frozen pitaya (dragonfruit)",
+      "1/2 frozen banana",
+      "1/4 cup coconut milk",
+      "1 tsp agave",
+    ],
+    toppings: [
+      "Sliced dragon fruit",
+      "Granola",
+      "Edible flowers",
+      "Honey",
+      "Coconut flakes",
+    ],
+  },
+];
+
+export function HealthySmoothieBowls() {
+  const [selected, setSelected] = useState<number | null>(null);
+  const [checkedToppings, setCheckedToppings] = useState<
+    Record<number, boolean[]>
+  >({});
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-teal-gp font-bold">
+        Smoothie Bowls 🥣
+      </h3>
+      <p className="text-muted-foreground">
+        Click a bowl to see the recipe! Smoothie bowls are thick smoothies you
+        eat with a spoon — topped with beautiful, crunchy toppings!
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {SMOOTHIE_BOWLS.map((bowl, i) => (
+          <Card
+            key={bowl.name}
+            className={`cursor-pointer card-hover border-2 ${selected === i ? "border-teal-gp bg-teal-light-gp" : "border-border hover:border-teal-gp"}`}
+            onClick={() => setSelected(selected === i ? null : i)}
+            data-ocid={`smoothie.item.${i + 1}`}
+          >
+            <CardContent className="p-4 text-center">
+              <div className="text-4xl mb-2">{bowl.emoji}</div>
+              <h4 className="font-display font-bold text-sm">{bowl.name}</h4>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      {selected !== null && (
+        <Card className="border-2 border-teal-gp">
+          <CardContent className="p-5">
+            <h4 className="font-display text-lg font-bold text-teal-gp mb-4">
+              {SMOOTHIE_BOWLS[selected].emoji} {SMOOTHIE_BOWLS[selected].name}
+            </h4>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <h5 className="font-bold text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                  Blend (Base)
+                </h5>
+                {SMOOTHIE_BOWLS[selected].base.map((ing) => (
+                  <p
+                    key={ing}
+                    className="text-sm py-1 border-b border-border last:border-0"
+                  >
+                    🟢 {ing}
+                  </p>
+                ))}
+                <p className="text-xs text-teal-gp mt-2 font-bold">
+                  💡 Blend until VERY thick — no liquid smoothie texture!
+                </p>
+              </div>
+              <div>
+                <h5 className="font-bold text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                  Toppings (check off as you add!)
+                </h5>
+                {SMOOTHIE_BOWLS[selected].toppings.map((top, ti) => (
+                  <button
+                    key={top}
+                    type="button"
+                    className="flex items-center gap-2 py-1 cursor-pointer text-left w-full bg-transparent border-0 p-0"
+                    onClick={() =>
+                      setCheckedToppings((prev) => {
+                        const arr =
+                          prev[selected] ||
+                          new Array(
+                            SMOOTHIE_BOWLS[selected].toppings.length,
+                          ).fill(false);
+                        const n = [...arr];
+                        n[ti] = !n[ti];
+                        return { ...prev, [selected]: n };
+                      })
+                    }
+                    data-ocid={`smoothie.checkbox.${ti + 1}`}
+                  >
+                    <Checkbox
+                      checked={checkedToppings[selected]?.[ti] || false}
+                      className="border-teal-gp data-[state=checked]:bg-teal-gp"
+                    />
+                    <span
+                      className={`text-sm ${checkedToppings[selected]?.[ti] ? "line-through text-muted-foreground" : ""}`}
+                    >
+                      {top}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ===== MOVIE NIGHT SNACKS =====
+const SNACK_RECIPES = [
+  {
+    name: "Nachos Supreme 🧀",
+    time: "15 min",
+    items: [
+      "Tortilla chips",
+      "Shredded cheddar cheese",
+      "Jalapeños (optional)",
+      "Sour cream",
+      "Guacamole",
+      "Salsa",
+    ],
+    steps: [
+      "Spread chips on a baking tray",
+      "Sprinkle cheese all over",
+      "Bake at 375°F for 5-7 min until melted",
+      "Add cold toppings and serve!",
+    ],
+  },
+  {
+    name: "Loaded Popcorn 🍿",
+    time: "10 min",
+    items: [
+      "Popped popcorn",
+      "Melted butter",
+      "Your choice: nutritional yeast, ranch powder, or cinnamon sugar",
+    ],
+    steps: [
+      "Pop your popcorn (microwave bag or stovetop)",
+      "Drizzle melted butter over all the popcorn",
+      "Sprinkle your chosen flavor powder",
+      "Toss thoroughly and serve immediately!",
+    ],
+  },
+  {
+    name: "Ants on a Log 🐜",
+    time: "5 min",
+    items: ["Celery stalks", "Peanut butter", "Raisins or chocolate chips"],
+    steps: [
+      "Wash and dry celery stalks",
+      "Cut into 3-inch pieces",
+      "Fill the groove with peanut butter",
+      "Add raisins on top as the 'ants'!",
+      "Serve on a platter for a cute snack board",
+    ],
+  },
+  {
+    name: "Fruit Kabobs 🍓",
+    time: "10 min",
+    items: [
+      "Strawberries",
+      "Grapes",
+      "Pineapple chunks",
+      "Melon cubes",
+      "Wooden skewers",
+      "Yogurt dip",
+    ],
+    steps: [
+      "Wash all fruit thoroughly",
+      "Thread alternating fruit onto skewers",
+      "Arrange on a plate like a rainbow",
+      "Make yogurt dip: mix greek yogurt + honey + vanilla",
+      "Serve and enjoy!",
+    ],
+  },
+];
+
+export function MovieNightSnacks() {
+  const [selected, setSelected] = useState<number | null>(null);
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-coral-gp font-bold">
+        Movie Night Snacks 🎬
+      </h3>
+      <p className="text-muted-foreground">
+        Upgrade your movie night with these easy, delicious snacks!
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {SNACK_RECIPES.map((snack, i) => (
+          <Card
+            key={snack.name}
+            className={`cursor-pointer card-hover border-2 ${selected === i ? "border-coral-gp bg-coral-light-gp" : "border-border hover:border-coral-gp"}`}
+            onClick={() => setSelected(selected === i ? null : i)}
+            data-ocid={`moviesnacks.item.${i + 1}`}
+          >
+            <CardContent className="p-4">
+              <h4 className="font-display font-bold text-sm text-coral-gp">
+                {snack.name}
+              </h4>
+              <Badge variant="outline" className="text-xs mt-1">
+                ⏱ {snack.time}
+              </Badge>
+              {selected === i && (
+                <div className="mt-3">
+                  <p className="text-xs font-bold text-muted-foreground mb-1">
+                    Ingredients:
+                  </p>
+                  {snack.items.map((item) => (
+                    <p key={item} className="text-xs">
+                      • {item}
+                    </p>
+                  ))}
+                  <p className="text-xs font-bold text-muted-foreground mt-2 mb-1">
+                    Steps:
+                  </p>
+                  {snack.steps.map((step, si) => (
+                    <p key={step} className="text-xs">
+                      {si + 1}. {step}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ===== NO GLUTEN RECIPES =====
+const GF_RECIPES = [
+  {
+    name: "Rice Cake Pizzas 🍕",
+    emoji: "🍕",
+    ingredients: [
+      "Rice cakes",
+      "Pizza sauce",
+      "Shredded mozzarella",
+      "Mini pepperoni or veggies",
+      "Italian seasoning",
+    ],
+    steps: [
+      "Place rice cakes on a baking sheet",
+      "Spread pizza sauce on each",
+      "Add cheese and toppings",
+      "Bake at 400°F for 5-7 min",
+      "Let cool slightly before eating!",
+    ],
+    gfNote: "Rice cakes are naturally gluten-free! Always check labels.",
+  },
+  {
+    name: "Banana Nice Cream 🍦",
+    emoji: "🍦",
+    ingredients: [
+      "3 frozen bananas",
+      "1/4 cup almond milk",
+      "Toppings of your choice",
+    ],
+    steps: [
+      "Freeze ripe bananas overnight",
+      "Blend frozen bananas until creamy",
+      "Add splash of almond milk if needed",
+      "Serve immediately for soft-serve or refreeze for firmer texture!",
+      "Top with your favorites!",
+    ],
+    gfNote: "Completely gluten-free, dairy-free, and no added sugar!",
+  },
+  {
+    name: "Veggie Spring Rolls 🥗",
+    emoji: "🥗",
+    ingredients: [
+      "Rice paper wrappers",
+      "Rice noodles (cooked)",
+      "Lettuce, cucumber, carrots",
+      "Mint leaves",
+      "Sweet chili sauce for dipping",
+    ],
+    steps: [
+      "Soak rice paper in warm water 20 sec",
+      "Lay flat and add fillings",
+      "Fold sides, then roll tightly",
+      "Serve with sweet chili sauce!",
+      "Store in damp towel if making ahead.",
+    ],
+    gfNote: "Rice paper and rice noodles are 100% gluten-free!",
+  },
+];
+
+export function NoGlutenRecipes() {
+  const [selected, setSelected] = useState<number | null>(null);
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-teal-gp font-bold">
+        Allergy-Friendly Recipes 🌿
+      </h3>
+      <p className="text-muted-foreground">
+        Delicious recipes that are gluten-free — perfect for those with celiac,
+        gluten sensitivity, or wheat allergies!
+      </p>
+      <Card className="bg-teal-light-gp border-none">
+        <CardContent className="p-3 text-sm">
+          <span className="font-bold text-teal-gp">⚠️ Allergy Note: </span>Always
+          check ALL ingredient labels, as cross-contamination can occur. When in
+          doubt, ask a grown-up!
+        </CardContent>
+      </Card>
+      <div className="grid gap-3 sm:grid-cols-3">
+        {GF_RECIPES.map((recipe, i) => (
+          <Card
+            key={recipe.name}
+            className={`cursor-pointer card-hover border-2 ${selected === i ? "border-teal-gp bg-teal-light-gp" : "border-border hover:border-teal-gp"}`}
+            onClick={() => setSelected(selected === i ? null : i)}
+            data-ocid={`gfrecipes.item.${i + 1}`}
+          >
+            <CardContent className="p-4 text-center">
+              <div className="text-4xl mb-2">{recipe.emoji}</div>
+              <h4 className="font-display font-bold text-sm">{recipe.name}</h4>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      {selected !== null && (
+        <Card className="border-2 border-teal-gp">
+          <CardContent className="p-5">
+            <h4 className="font-display text-lg font-bold text-teal-gp mb-3">
+              {GF_RECIPES[selected].emoji} {GF_RECIPES[selected].name}
+            </h4>
+            <p className="text-xs text-teal-gp font-bold mb-3">
+              ✅ {GF_RECIPES[selected].gfNote}
+            </p>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <h5 className="font-bold text-sm text-muted-foreground mb-2">
+                  Ingredients
+                </h5>
+                {GF_RECIPES[selected].ingredients.map((i) => (
+                  <p key={i} className="text-sm">
+                    • {i}
+                  </p>
+                ))}
+              </div>
+              <div>
+                <h5 className="font-bold text-sm text-muted-foreground mb-2">
+                  Steps
+                </h5>
+                {GF_RECIPES[selected].steps.map((step, si) => (
+                  <p key={step} className="text-sm">
+                    {si + 1}. {step}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ===== ENERGY BITES =====
+const ENERGY_BITE_VARIATIONS = [
+  {
+    name: "Classic PB Bites",
+    emoji: "🟤",
+    mainIngredient: "Peanut butter",
+    ingredients: [
+      "1 cup rolled oats",
+      "1/2 cup peanut butter",
+      "1/3 cup honey",
+      "1/2 cup mini chocolate chips",
+      "1 tsp vanilla",
+      "Pinch of salt",
+    ],
+    tips: "Add flaxseed for extra omega-3s!",
+  },
+  {
+    name: "Coconut Almond Bites",
+    emoji: "🤍",
+    mainIngredient: "Almond butter",
+    ingredients: [
+      "1 cup rolled oats",
+      "1/2 cup almond butter",
+      "1/3 cup honey",
+      "1/2 cup shredded coconut",
+      "1/4 cup dried cranberries",
+      "1 tsp vanilla",
+    ],
+    tips: "Toast the coconut first for extra flavor!",
+  },
+  {
+    name: "Chocolate Brownie Bites",
+    emoji: "🍫",
+    mainIngredient: "Cocoa powder",
+    ingredients: [
+      "1 cup rolled oats",
+      "1/2 cup peanut butter",
+      "1/3 cup honey",
+      "1/4 cup cocoa powder",
+      "1/2 cup chocolate chips",
+      "1 tsp vanilla",
+    ],
+    tips: "Dust with powdered sugar for a fancy look!",
+  },
+];
+
+const ENERGY_STEPS = [
+  "Mix all ingredients together in a large bowl",
+  "Stir until everything is evenly combined (hands work best!)",
+  "If mixture is too wet, add more oats. Too dry? Add a little more honey.",
+  "Refrigerate for 30-60 minutes until firm enough to roll",
+  "Roll into 1-inch balls with your hands",
+  "Place on parchment paper-lined tray",
+  "Store in fridge for up to 1 week or freeze for 3 months",
+];
+
+export function EnergyBites() {
+  const [selected, setSelected] = useState(0);
+  const [checkedSteps, setCheckedSteps] = useState<boolean[]>(
+    new Array(ENERGY_STEPS.length).fill(false),
+  );
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-yellow-gp font-bold">
+        No-Bake Energy Bites ⚡
+      </h3>
+      <p className="text-muted-foreground">
+        3 variations — all no-bake, all delicious, all healthy! Make a batch
+        before sports, school, or studying! ⚡
+      </p>
+      <div className="flex gap-2 flex-wrap">
+        {ENERGY_BITE_VARIATIONS.map((v, i) => (
+          <Button
+            key={v.name}
+            size="sm"
+            variant={selected === i ? "default" : "outline"}
+            className={`rounded-full ${selected === i ? "bg-yellow-gp text-foreground" : "border-yellow-gp text-yellow-gp"}`}
+            onClick={() => {
+              setSelected(i);
+              setCheckedSteps(new Array(ENERGY_STEPS.length).fill(false));
+            }}
+            data-ocid="energybites.tab"
+          >
+            {v.emoji} {v.name}
+          </Button>
+        ))}
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="bg-yellow-light-gp border-none">
+          <CardContent className="p-4">
+            <h4 className="font-display font-bold text-yellow-gp mb-3">
+              🛒 Ingredients
+            </h4>
+            {ENERGY_BITE_VARIATIONS[selected].ingredients.map((i) => (
+              <p key={i} className="text-sm py-1">
+                • {i}
+              </p>
+            ))}
+            <p className="text-xs text-yellow-gp font-bold mt-2">
+              💡 {ENERGY_BITE_VARIATIONS[selected].tips}
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-2 border-yellow-gp">
+          <CardContent className="p-4">
+            <h4 className="font-display font-bold text-yellow-gp mb-3">
+              👩‍🍳 Steps (check off!)
+            </h4>
+            {ENERGY_STEPS.map((step, i) => (
+              <button
+                key={step}
+                type="button"
+                className="flex items-start gap-2 mb-2 cursor-pointer text-left w-full bg-transparent border-0 p-0"
+                onClick={() =>
+                  setCheckedSteps((prev) => {
+                    const n = [...prev];
+                    n[i] = !n[i];
+                    return n;
+                  })
+                }
+                data-ocid={`energybites.checkbox.${i + 1}`}
+              >
+                <Checkbox
+                  checked={checkedSteps[i]}
+                  className="mt-0.5 border-yellow-gp data-[state=checked]:bg-yellow-gp shrink-0"
+                />
+                <span
+                  className={`text-sm ${checkedSteps[i] ? "line-through text-muted-foreground" : ""}`}
+                >
+                  {step}
+                </span>
+              </button>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+      {checkedSteps.every(Boolean) && (
+        <Card
+          className="bg-teal-light-gp border-none text-center"
+          data-ocid="energybites.success_state"
+        >
+          <CardContent className="p-4">
+            <div className="text-3xl mb-1">⚡</div>
+            <p className="font-display font-bold text-teal-gp">
+              Energy bites ready! Fuel your superpowers! 🌟
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 export function BakingBoss() {
   return (
     <div className="flex flex-col gap-5 py-2">

@@ -538,6 +538,293 @@ const DINOS = [
   },
 ];
 
+// ===== HELPER for experiment guide components =====
+function ExperimentGuide({
+  title,
+  emoji,
+  difficulty,
+  time,
+  materials,
+  steps,
+  science,
+}: {
+  title: string;
+  emoji: string;
+  difficulty: string;
+  time: string;
+  materials: string[];
+  steps: string[];
+  science: string;
+}) {
+  const [checkedMats, setCheckedMats] = useState<boolean[]>(
+    new Array(materials.length).fill(false),
+  );
+  const [checkedSteps, setCheckedSteps] = useState<boolean[]>(
+    new Array(steps.length).fill(false),
+  );
+  const doneCount = checkedMats.filter(Boolean).length;
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <div className="flex items-center gap-3">
+        <span className="text-4xl">{emoji}</span>
+        <div>
+          <h3 className="font-display text-2xl text-teal-gp font-bold">
+            {title}
+          </h3>
+          <div className="flex gap-2 mt-1">
+            <Badge variant="outline">{difficulty}</Badge>
+            <Badge variant="outline">⏱ {time}</Badge>
+          </div>
+        </div>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card className="border-2 border-teal-light-gp">
+          <CardContent className="p-4">
+            <h4 className="font-display font-bold text-teal-gp mb-3">
+              Materials Checklist ({doneCount}/{materials.length})
+            </h4>
+            {materials.map((mat, i) => (
+              <button
+                key={mat}
+                type="button"
+                className="flex items-center gap-2 mb-2 cursor-pointer text-left w-full bg-transparent border-0 p-0"
+                onClick={() =>
+                  setCheckedMats((prev) => {
+                    const n = [...prev];
+                    n[i] = !n[i];
+                    return n;
+                  })
+                }
+                data-ocid={`experiment.checkbox.${i + 1}`}
+              >
+                <Checkbox
+                  checked={checkedMats[i]}
+                  className="border-teal-gp data-[state=checked]:bg-teal-gp shrink-0"
+                />
+                <span
+                  className={`text-sm ${checkedMats[i] ? "line-through text-muted-foreground" : ""}`}
+                >
+                  {mat}
+                </span>
+              </button>
+            ))}
+          </CardContent>
+        </Card>
+        <Card className="border-2 border-teal-gp">
+          <CardContent className="p-4">
+            <h4 className="font-display font-bold text-teal-gp mb-3">Steps</h4>
+            {steps.map((step, i) => (
+              <button
+                key={step}
+                type="button"
+                className="flex items-start gap-2 mb-2 cursor-pointer text-left w-full bg-transparent border-0 p-0"
+                onClick={() =>
+                  setCheckedSteps((prev) => {
+                    const n = [...prev];
+                    n[i] = !n[i];
+                    return n;
+                  })
+                }
+                data-ocid={`experiment.checkbox.${i + 1}`}
+              >
+                <span
+                  className={`w-6 h-6 rounded-full text-xs flex items-center justify-center shrink-0 font-bold ${checkedSteps[i] ? "bg-teal-gp text-white" : "bg-muted text-muted-foreground"}`}
+                >
+                  {i + 1}
+                </span>
+                <span
+                  className={`text-sm ${checkedSteps[i] ? "line-through text-muted-foreground" : ""}`}
+                >
+                  {step}
+                </span>
+              </button>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+      <Card className="bg-yellow-light-gp border-none">
+        <CardContent className="p-3 text-sm">
+          <span className="font-bold text-yellow-gp">🧪 The Science: </span>
+          {science}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export function SlimeLab() {
+  return (
+    <ExperimentGuide
+      title="Slime Lab 🟢"
+      emoji="🟢"
+      difficulty="Easy"
+      time="20 min"
+      materials={[
+        "1/2 cup white school glue",
+        "1/2 tsp baking soda",
+        "1 tbsp contact lens solution",
+        "Food coloring (optional)",
+        "Glitter (optional)",
+        "Bowl and spoon",
+      ]}
+      steps={[
+        "Pour glue into bowl",
+        "Add baking soda and stir well",
+        "Add food coloring and glitter if desired",
+        "Slowly add contact lens solution — 1 tsp at a time",
+        "Stir vigorously until slime pulls away from bowl sides",
+        "Knead with your hands for 2-3 minutes until stretchy",
+        "Store in airtight container — keeps for 1 week! 🟢",
+      ]}
+      science="Contact lens solution contains boric acid + sodium borate. These react with the PVA polymer in glue to create cross-links, turning the liquid glue into a stretchy slime!"
+    />
+  );
+}
+
+export function BakingSodaVolcano() {
+  return (
+    <ExperimentGuide
+      title="Baking Soda Volcano 🌋"
+      emoji="🌋"
+      difficulty="Easy"
+      time="15 min"
+      materials={[
+        "3 tbsp baking soda",
+        "1/2 cup white vinegar",
+        "Red food coloring",
+        "Dish soap (1 squirt)",
+        "A cup or bottle",
+        "A tray to catch overflow",
+      ]}
+      steps={[
+        "Place your cup/bottle on the tray",
+        "Add baking soda to the cup",
+        "Add a few drops of red food coloring",
+        "Add one squirt of dish soap",
+        "Pour vinegar in all at once — STAND BACK!",
+        "Watch your volcano ERUPT! 🌋",
+        "Repeat as many times as you like!",
+      ]}
+      science="Baking soda is a base and vinegar is an acid. When mixed, they react to create CO₂ gas. The dish soap traps the bubbles, creating dramatic foam — just like real lava!"
+    />
+  );
+}
+
+export function MagicMilkExperiment() {
+  return (
+    <ExperimentGuide
+      title="Magic Milk! 🥛"
+      emoji="🥛"
+      difficulty="Easy"
+      time="10 min"
+      materials={[
+        "Whole milk (fill a shallow dish)",
+        "Red, blue, yellow, and green food coloring",
+        "Dish soap",
+        "Cotton swabs",
+        "A shallow plate or dish",
+      ]}
+      steps={[
+        "Pour whole milk into the shallow dish",
+        "Add 1-2 drops of EACH color food coloring around the dish — don't mix!",
+        "Dip a cotton swab in dish soap",
+        "Touch the soapy end to the center of the milk",
+        "WATCH! Colors explode and swirl! 🌈",
+        "Move the swab around for more reactions",
+        "Each new spot creates new explosions!",
+      ]}
+      science="Milk contains fat and protein molecules. Soap breaks down fat molecules. When soap touches milk, it chases the fat in all directions, carrying the food coloring with it — creating a color explosion!"
+    />
+  );
+}
+
+export function RainInAGlass() {
+  return (
+    <ExperimentGuide
+      title="Rain in a Glass ☁️"
+      emoji="☁️"
+      difficulty="Easy"
+      time="15 min"
+      materials={[
+        "A clear glass or jar",
+        "Shaving cream",
+        "Water",
+        "Blue food coloring",
+        "A dropper or spoon",
+        "Patience! 😊",
+      ]}
+      steps={[
+        "Fill the glass 2/3 with water",
+        "Spray shaving cream on top to create a 'cloud'",
+        "Carefully drop blue food coloring onto the cream cloud",
+        "Watch and wait... (the magic takes a minute!)",
+        "Soon, blue 'rain' will fall through the cream into the water below!",
+        "Try different colors for a rainbow rain effect 🌈",
+      ]}
+      science="The shaving cream acts like a cloud. As it absorbs water, it eventually gets too heavy and the dye 'rains' through — just like real clouds releasing rain when they become saturated with water!"
+    />
+  );
+}
+
+export function GrowCrystals() {
+  return (
+    <ExperimentGuide
+      title="Grow Crystals 💎"
+      emoji="💎"
+      difficulty="Medium"
+      time="3-5 days"
+      materials={[
+        "1 cup hot water (not boiling)",
+        "1/2 cup table salt OR alum powder",
+        "Food coloring",
+        "A glass jar",
+        "A pencil or skewer",
+        "String",
+        "Magnifying glass",
+      ]}
+      steps={[
+        "Heat water (have a grown-up help!)",
+        "Stir in salt/alum until no more dissolves (this is a saturated solution)",
+        "Add a few drops of food coloring",
+        "Tie a short string to a pencil and hang it in the jar",
+        "Place in a cool, undisturbed spot",
+        "Check every day — crystals start forming in 24 hours!",
+        "By day 3-5 you'll have beautiful gem-like crystals! 💎",
+      ]}
+      science="When water is hot, it can hold more dissolved salt. As it cools, the water becomes 'supersaturated' and can't hold the salt anymore — so salt molecules arrange themselves into a perfect crystal lattice structure!"
+    />
+  );
+}
+
+export function InvisibleInk() {
+  return (
+    <ExperimentGuide
+      title="Invisible Ink ✉️"
+      emoji="✉️"
+      difficulty="Easy"
+      time="20 min"
+      materials={[
+        "Fresh lemon juice (or lemon wedge)",
+        "Small bowl",
+        "Cotton swab or thin paintbrush",
+        "White paper",
+        "A lamp or sunlight (for revealing)",
+      ]}
+      steps={[
+        "Squeeze lemon juice into the bowl",
+        "Dip cotton swab into lemon juice",
+        "Write your secret message on white paper",
+        "Let dry completely — message disappears!",
+        "To reveal: hold paper near a warm lamp (not too close!)",
+        "Watch your secret message appear as the paper warms!",
+        "Try other liquids: milk, apple juice, onion juice! 🔍",
+      ]}
+      science="Lemon juice is an organic compound. When dried, it's invisible. Heat causes oxidation — the lemon juice turns brown as it reacts with oxygen and the heat, making your secret message visible!"
+    />
+  );
+}
+
 export function DinosaurDig() {
   const [dinos, setDinos] = useState(DINOS);
 

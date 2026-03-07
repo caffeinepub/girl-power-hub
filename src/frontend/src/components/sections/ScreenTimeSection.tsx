@@ -1906,3 +1906,521 @@ export function PositiveFeedReset() {
     </div>
   );
 }
+
+// ─── NaturePhotoChallenge ─────────────────────────────────────────────────────
+const NATURE_CHALLENGES = [
+  { emoji: "🌸", label: "Find a flower and photograph it from below" },
+  { emoji: "🐛", label: "Spot a bug or insect in the wild" },
+  { emoji: "☁️", label: "Take a photo of a cloud that looks like something" },
+  { emoji: "🍂", label: "Collect 5 different-shaped leaves" },
+  { emoji: "🌳", label: "Hug a tree and describe how it feels" },
+  { emoji: "🐦", label: "Listen for 3 different bird calls" },
+  { emoji: "🌈", label: "Find all 7 rainbow colors in nature" },
+  { emoji: "🪨", label: "Find the most interesting rock you can" },
+  { emoji: "🕷️", label: "Spot a spider web — don't disturb it!" },
+  { emoji: "🌾", label: "Feel different grass or plant textures" },
+];
+
+export function NaturePhotoChallenge() {
+  const [done, setDone] = useState<boolean[]>(() =>
+    loadLS("npc_done", new Array(NATURE_CHALLENGES.length).fill(false)),
+  );
+  const toggle = (i: number) => {
+    setDone((prev) => {
+      const next = [...prev];
+      next[i] = !next[i];
+      saveLS("npc_done", next);
+      return next;
+    });
+  };
+  const completed = done.filter(Boolean).length;
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-teal-gp font-bold">
+        Nature Photo Challenge 📸
+      </h3>
+      <p className="text-muted-foreground">
+        Put your phone DOWN as a phone — pick it up as a camera! Complete these
+        nature challenges outside and check them off.
+      </p>
+      <div className="flex items-center gap-3 mb-2">
+        <Progress
+          value={(completed / NATURE_CHALLENGES.length) * 100}
+          className="flex-1"
+          data-ocid="npc.loading_state"
+        />
+        <span className="text-sm font-bold text-teal-gp whitespace-nowrap">
+          {completed}/{NATURE_CHALLENGES.length} done
+        </span>
+      </div>
+      <div className="flex flex-col gap-2">
+        {NATURE_CHALLENGES.map((c, i) => (
+          <button
+            key={c.label}
+            type="button"
+            onClick={() => toggle(i)}
+            data-ocid={`npc.item.${i + 1}`}
+            className={`flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-all border-2 ${
+              done[i]
+                ? "bg-teal-gp/20 border-teal-gp line-through text-muted-foreground"
+                : "bg-background border-border hover:border-teal-gp"
+            }`}
+          >
+            <span className="text-2xl">{c.emoji}</span>
+            <span className="text-sm">{c.label}</span>
+            {done[i] && (
+              <span className="ml-auto text-teal-gp font-bold">✓</span>
+            )}
+          </button>
+        ))}
+      </div>
+      {completed === NATURE_CHALLENGES.length && (
+        <div
+          className="rounded-2xl bg-teal-gp/20 p-4 text-center text-teal-gp font-bold text-lg"
+          data-ocid="npc.success_state"
+        >
+          🌿 Nature Explorer Badge Unlocked! You found beauty in the real world!
+          🌿
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── PhoneFreeHobbies ─────────────────────────────────────────────────────────
+const PHONE_FREE_HOBBIES = [
+  {
+    emoji: "🎨",
+    title: "Watercolor Painting",
+    desc: "All you need is paper and a $3 paint set from the dollar store.",
+  },
+  {
+    emoji: "📚",
+    title: "Reading a Book",
+    desc: "Pick a book that looks interesting — fiction, mystery, or even comics count!",
+  },
+  {
+    emoji: "🎵",
+    title: "Learning an Instrument",
+    desc: "Try ukulele, recorder, or even just beatboxing — YouTube tutorials work!",
+  },
+  {
+    emoji: "🧁",
+    title: "Baking Something Yummy",
+    desc: "Muffins, cookies, or even just toast with creative toppings.",
+  },
+  {
+    emoji: "🌱",
+    title: "Tending a Plant",
+    desc: "Water it, talk to it, name it. Plants are surprisingly good listeners.",
+  },
+  {
+    emoji: "✍️",
+    title: "Writing a Story",
+    desc: "Start with: 'She found a door that hadn't been there yesterday...'",
+  },
+  {
+    emoji: "🧶",
+    title: "Knitting or Friendship Bracelets",
+    desc: "YouTube has beginner tutorials for all skill levels.",
+  },
+  {
+    emoji: "🎭",
+    title: "Act Out a Play",
+    desc: "Write a short script and perform it for your family or stuffed animals.",
+  },
+  {
+    emoji: "🍳",
+    title: "Cook a New Recipe",
+    desc: "Challenge yourself to make something you've never tried before.",
+  },
+  {
+    emoji: "🎪",
+    title: "Circus Skills",
+    desc: "Try juggling with scarves, or practice balancing a broom on your palm.",
+  },
+];
+
+export function PhoneFreeHobbies() {
+  const [saved, setSaved] = useState<string[]>(() => loadLS("pfh_saved", []));
+  const toggle = (title: string) => {
+    setSaved((prev) => {
+      const next = prev.includes(title)
+        ? prev.filter((t) => t !== title)
+        : [...prev, title];
+      saveLS("pfh_saved", next);
+      return next;
+    });
+  };
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-teal-gp font-bold">
+        Phone-Free Hobbies 🌟
+      </h3>
+      <p className="text-muted-foreground">
+        Tap the heart on hobbies you want to try! Save your favorites and
+        actually do one today instead of scrolling.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {PHONE_FREE_HOBBIES.map((h, i) => (
+          <div
+            key={h.title}
+            className={`rounded-2xl border-2 p-4 transition-all ${
+              saved.includes(h.title)
+                ? "border-teal-gp bg-teal-gp/10"
+                : "border-border bg-background"
+            }`}
+            data-ocid={`pfh.item.${i + 1}`}
+          >
+            <div className="flex items-start gap-2">
+              <span className="text-2xl">{h.emoji}</span>
+              <div className="flex-1">
+                <p className="font-bold text-sm">{h.title}</p>
+                <p className="text-xs text-muted-foreground mt-1">{h.desc}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggle(h.title)}
+                data-ocid={`pfh.toggle.${i + 1}`}
+                className={`text-xl transition-transform hover:scale-110 ${
+                  saved.includes(h.title)
+                    ? "text-teal-gp"
+                    : "text-muted-foreground"
+                }`}
+                aria-label={
+                  saved.includes(h.title)
+                    ? "Remove from favorites"
+                    : "Save to favorites"
+                }
+              >
+                {saved.includes(h.title) ? "💚" : "🤍"}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {saved.length > 0 && (
+        <div
+          className="rounded-2xl bg-teal-gp/10 p-4"
+          data-ocid="pfh.success_state"
+        >
+          <p className="font-bold text-teal-gp mb-2">Your saved hobbies 💚</p>
+          <div className="flex flex-wrap gap-2">
+            {saved.map((s) => (
+              <span
+                key={s}
+                className="bg-teal-gp text-white text-xs rounded-full px-3 py-1"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── DigitalDetoxPlan ─────────────────────────────────────────────────────────
+const DETOX_STEPS = [
+  {
+    day: "Day 1",
+    title: "Awareness Day",
+    tip: "Don't change anything yet — just count how many times you pick up your phone. Write it down!",
+  },
+  {
+    day: "Day 2",
+    title: "No-Phone Morning",
+    tip: "Keep your phone off for the first 30 minutes after you wake up. Stretch, drink water, look out the window.",
+  },
+  {
+    day: "Day 3",
+    title: "Airplane Mode Meals",
+    tip: "Put your phone on airplane mode during every meal today. Be present with whoever you're eating with.",
+  },
+  {
+    day: "Day 4",
+    title: "App Audit",
+    tip: "Delete 3 apps you haven't used in a month. Unfollow 5 accounts that make you feel bad about yourself.",
+  },
+  {
+    day: "Day 5",
+    title: "Phone-Free Hour",
+    tip: "Pick one hour today — ideally before bed — and put your phone in another room. Notice what you do instead.",
+  },
+  {
+    day: "Day 6",
+    title: "Real Connection Day",
+    tip: "Text or call ONE person to hang out in real life. Even a short walk counts.",
+  },
+  {
+    day: "Day 7",
+    title: "Reflection & Celebrate!",
+    tip: "Write down 3 things you noticed this week. How do you feel? What will you keep doing?",
+  },
+];
+
+export function DigitalDetoxPlan() {
+  const [completed, setCompleted] = useState<boolean[]>(() =>
+    loadLS("ddp_done", new Array(DETOX_STEPS.length).fill(false)),
+  );
+  const toggle = (i: number) => {
+    setCompleted((prev) => {
+      const next = [...prev];
+      next[i] = !next[i];
+      saveLS("ddp_done", next);
+      return next;
+    });
+  };
+  const doneCount = completed.filter(Boolean).length;
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-coral-gp font-bold">
+        7-Day Digital Detox Plan 🌿
+      </h3>
+      <p className="text-muted-foreground">
+        A gentle, step-by-step plan to reset your relationship with your phone.
+        One small step per day — no pressure, just progress.
+      </p>
+      <div className="flex items-center gap-3 mb-1">
+        <Progress
+          value={(doneCount / DETOX_STEPS.length) * 100}
+          className="flex-1"
+          data-ocid="ddp.loading_state"
+        />
+        <span className="text-sm font-bold text-coral-gp">
+          {doneCount}/7 days
+        </span>
+      </div>
+      <div className="flex flex-col gap-3">
+        {DETOX_STEPS.map((step, i) => (
+          <div
+            key={step.day}
+            className={`rounded-2xl border-2 p-4 transition-all ${
+              completed[i]
+                ? "border-coral-gp bg-coral-gp/10 opacity-75"
+                : "border-border bg-background"
+            }`}
+            data-ocid={`ddp.item.${i + 1}`}
+          >
+            <div className="flex items-start gap-3">
+              <button
+                type="button"
+                onClick={() => toggle(i)}
+                data-ocid={`ddp.checkbox.${i + 1}`}
+                className={`mt-1 w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
+                  completed[i]
+                    ? "bg-coral-gp border-coral-gp text-white"
+                    : "border-muted-foreground"
+                }`}
+                aria-label={`Mark day ${i + 1} ${completed[i] ? "incomplete" : "complete"}`}
+              >
+                {completed[i] && "✓"}
+              </button>
+              <div>
+                <p className="font-bold text-sm text-coral-gp">
+                  {step.day}: {step.title}
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">{step.tip}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {doneCount === 7 && (
+        <div
+          className="rounded-2xl bg-coral-gp/20 p-4 text-center text-coral-gp font-bold text-lg"
+          data-ocid="ddp.success_state"
+        >
+          🎉 You completed the Digital Detox Challenge! You're in control! 🎉
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── MindfulScrollingQuiz ─────────────────────────────────────────────────────
+const MSQ_QUESTIONS = [
+  {
+    q: "You open Instagram 'just to check' and 45 minutes later you're still scrolling. This is called:",
+    options: ["Time management", "Doom scrolling", "Research", "Entertainment"],
+    answer: 1,
+    explain:
+      "Doom scrolling is when you keep scrolling even though you don't feel good — you're just stuck in the loop.",
+  },
+  {
+    q: "After seeing everyone's vacation photos, you feel bad about your own life. This is called:",
+    options: ["Inspiration", "Gratitude", "Social comparison", "Connection"],
+    answer: 2,
+    explain:
+      "Social comparison happens when we measure our real lives against other people's highlight reels online.",
+  },
+  {
+    q: "You feel anxious if you haven't checked your phone for an hour. This might be a sign of:",
+    options: [
+      "Good social skills",
+      "Phone dependency",
+      "Healthy habits",
+      "Boredom",
+    ],
+    answer: 1,
+    explain:
+      "Phone dependency is real! The apps are literally designed to make you feel anxious without them.",
+  },
+  {
+    q: "The best thing to do when you catch yourself doom scrolling is:",
+    options: [
+      "Keep scrolling — just a few more minutes",
+      "Put the phone down and take 3 deep breaths",
+      "Switch to a different app",
+      "Text a friend",
+    ],
+    answer: 1,
+    explain:
+      "Pausing and breathing interrupts the loop! Your brain needs a moment to reset before making a choice.",
+  },
+  {
+    q: "Apps use _____ to keep you scrolling forever:",
+    options: [
+      "Boring content",
+      "Variable rewards (like a slot machine)",
+      "Educational videos",
+      "Friend requests",
+    ],
+    answer: 1,
+    explain:
+      "Variable rewards — sometimes you see something amazing, sometimes boring — is the same trick slot machines use to keep people hooked.",
+  },
+];
+
+export function MindfulScrollingQuiz() {
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
+  const [finished, setFinished] = useState(false);
+
+  const question = MSQ_QUESTIONS[current];
+
+  const choose = (i: number) => {
+    if (selected !== null) return;
+    setSelected(i);
+    if (i === question.answer) setScore((s) => s + 1);
+  };
+
+  const next = () => {
+    if (current < MSQ_QUESTIONS.length - 1) {
+      setCurrent((c) => c + 1);
+      setSelected(null);
+    } else {
+      setFinished(true);
+    }
+  };
+
+  const restart = () => {
+    setCurrent(0);
+    setSelected(null);
+    setScore(0);
+    setFinished(false);
+  };
+
+  if (finished) {
+    return (
+      <div
+        className="flex flex-col gap-4 py-2 items-center text-center"
+        data-ocid="msq.success_state"
+      >
+        <h3 className="font-display text-2xl text-coral-gp font-bold">
+          Quiz Complete! 🎓
+        </h3>
+        <div className="text-5xl font-bold text-coral-gp">
+          {score}/{MSQ_QUESTIONS.length}
+        </div>
+        <p className="text-muted-foreground max-w-sm">
+          {score === MSQ_QUESTIONS.length
+            ? "Perfect score! You're a mindful scrolling expert! 🌟"
+            : score >= 3
+              ? "Great job! You know a lot about how apps affect your mind. 💪"
+              : "Keep learning! The more you know, the more power you have over your screen time. 💡"}
+        </p>
+        <Button
+          onClick={restart}
+          data-ocid="msq.secondary_button"
+          className="rounded-full bg-coral-gp text-white"
+        >
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-coral-gp font-bold">
+        Mindful Scrolling Quiz 📱
+      </h3>
+      <p className="text-muted-foreground">
+        How much do you know about how social media affects your brain?
+      </p>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>
+          Question {current + 1} of {MSQ_QUESTIONS.length}
+        </span>
+        <Progress
+          value={((current + 1) / MSQ_QUESTIONS.length) * 100}
+          className="flex-1"
+          data-ocid="msq.loading_state"
+        />
+      </div>
+      <div className="rounded-2xl bg-coral-gp/10 border-2 border-coral-gp/30 p-5">
+        <p className="font-semibold text-base">{question.q}</p>
+      </div>
+      <div className="flex flex-col gap-2">
+        {question.options.map((opt, i) => {
+          let cls =
+            "rounded-xl border-2 px-4 py-3 text-left transition-all text-sm ";
+          if (selected === null) {
+            cls +=
+              "border-border bg-background hover:border-coral-gp cursor-pointer";
+          } else if (i === question.answer) {
+            cls += "border-green-500 bg-green-500/10 text-green-700 font-bold";
+          } else if (i === selected) {
+            cls += "border-destructive bg-destructive/10 text-destructive";
+          } else {
+            cls += "border-border bg-muted/50 text-muted-foreground opacity-60";
+          }
+          return (
+            <button
+              key={opt}
+              type="button"
+              className={cls}
+              onClick={() => choose(i)}
+              disabled={selected !== null}
+              data-ocid={`msq.item.${i + 1}`}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+      {selected !== null && (
+        <div className="rounded-xl bg-background border-2 border-border p-4 text-sm text-muted-foreground">
+          <span className="font-bold text-foreground">
+            {selected === question.answer ? "✅ Correct! " : "❌ Not quite. "}
+          </span>
+          {question.explain}
+        </div>
+      )}
+      {selected !== null && (
+        <Button
+          onClick={next}
+          data-ocid="msq.primary_button"
+          className="rounded-full bg-coral-gp text-white self-end"
+        >
+          {current < MSQ_QUESTIONS.length - 1
+            ? "Next Question →"
+            : "See Results 🎉"}
+        </Button>
+      )}
+    </div>
+  );
+}

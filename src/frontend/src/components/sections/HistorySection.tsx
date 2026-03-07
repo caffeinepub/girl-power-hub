@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -578,6 +579,430 @@ export function WallOfFame() {
             </Card>
           ))}
         </div>
+      )}
+    </div>
+  );
+}
+
+// ===== EARTH DAY HISTORY =====
+const EARTH_DAY_FACTS = [
+  {
+    q: "What year was the first Earth Day?",
+    options: ["1960", "1970", "1980", "1990"],
+    correct: 1,
+    fact: "The first Earth Day was April 22, 1970! 20 million Americans participated.",
+  },
+  {
+    q: "Who founded Earth Day?",
+    options: ["Al Gore", "Gaylord Nelson", "John Muir", "Rachel Carson"],
+    correct: 1,
+    fact: "Senator Gaylord Nelson, inspired by a 1969 oil spill, created Earth Day to raise environmental awareness.",
+  },
+  {
+    q: "How many countries celebrate Earth Day today?",
+    options: ["50", "100", "150", "193+"],
+    correct: 3,
+    fact: "Over 193 countries celebrate Earth Day, making it the largest civic observance in the world!",
+  },
+  {
+    q: "What major law was passed after the first Earth Day?",
+    options: [
+      "Clean Air Act",
+      "Clean Water Act",
+      "Endangered Species Act",
+      "All of these",
+    ],
+    correct: 3,
+    fact: "The Clean Air Act, Clean Water Act, AND Endangered Species Act were all passed thanks to Earth Day activism!",
+  },
+];
+
+export function EarthDayHistory() {
+  const [answers, setAnswers] = useState<(number | null)[]>(
+    new Array(EARTH_DAY_FACTS.length).fill(null),
+  );
+  const score = answers.filter(
+    (a, i) => a === EARTH_DAY_FACTS[i].correct,
+  ).length;
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-teal-gp font-bold">
+        Earth Day History 🌍
+      </h3>
+      <p className="text-muted-foreground">
+        Learn how Earth Day started and test your knowledge!
+      </p>
+      <Card className="bg-teal-light-gp border-none">
+        <CardContent className="p-4">
+          <p className="font-bold text-teal-gp mb-2">
+            🌱 Why Earth Day Matters
+          </p>
+          <p className="text-sm text-foreground">
+            Earth Day was born out of a massive oil spill in Santa Barbara,
+            California in 1969. Senator Gaylord Nelson channeled the energy of
+            the anti-war movement into the cause of environmental action — and
+            the world changed forever. Today it's a global movement!
+          </p>
+        </CardContent>
+      </Card>
+      <div className="flex flex-col gap-4">
+        {EARTH_DAY_FACTS.map((item, qi) => (
+          <Card
+            key={item.q}
+            className="border-2 border-teal-light-gp"
+            data-ocid={`earthday.item.${qi + 1}`}
+          >
+            <CardContent className="p-4">
+              <p className="font-bold text-sm mb-2">
+                {qi + 1}. {item.q}
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                {item.options.map((opt, oi) => (
+                  <Button
+                    key={opt}
+                    size="sm"
+                    variant="outline"
+                    className={`h-auto py-2 text-left justify-start text-xs ${answers[qi] !== null ? (oi === item.correct ? "border-teal-gp bg-teal-light-gp text-teal-gp font-bold" : answers[qi] === oi ? "border-destructive bg-red-50" : "opacity-50") : "hover:border-teal-gp"}`}
+                    onClick={() =>
+                      answers[qi] === null &&
+                      setAnswers((prev) => {
+                        const n = [...prev];
+                        n[qi] = oi;
+                        return n;
+                      })
+                    }
+                    data-ocid={`earthday.button.${qi + 1}`}
+                  >
+                    {opt}
+                  </Button>
+                ))}
+              </div>
+              {answers[qi] !== null && (
+                <p className="text-xs text-teal-gp">
+                  {answers[qi] === item.correct ? "✅" : "❌"} {item.fact}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      {answers.every((a) => a !== null) && (
+        <Card
+          className={`border-none text-center ${score >= 3 ? "bg-teal-light-gp" : "bg-yellow-light-gp"}`}
+          data-ocid="earthday.success_state"
+        >
+          <CardContent className="p-6">
+            <div className="text-4xl mb-2">{score >= 3 ? "🌍" : "🌱"}</div>
+            <p className="font-display text-xl font-bold">
+              {score}/{EARTH_DAY_FACTS.length} —{" "}
+              {score >= 3 ? "Earth Day Expert!" : "Keep learning!"}
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ===== WOMEN'S HISTORY MONTH =====
+const WOMENS_HISTORY_FACTS = [
+  {
+    name: "Susan B. Anthony",
+    field: "Suffrage",
+    fact: "Fought for women's right to vote for 50 years. Was arrested for voting in 1872. The 19th Amendment was ratified 14 years after her death.",
+    emoji: "🗳️",
+  },
+  {
+    name: "Eleanor Roosevelt",
+    field: "Human Rights",
+    fact: "Served as First Lady and became the first chair of the UN Commission on Human Rights. Helped write the Universal Declaration of Human Rights.",
+    emoji: "🕊️",
+  },
+  {
+    name: "Rosie the Riveter",
+    field: "Cultural Symbol",
+    fact: "The iconic 'We Can Do It!' poster became a symbol of women entering the workforce during WWII, proving women could do 'men's' jobs.",
+    emoji: "💪",
+  },
+  {
+    name: "Gloria Steinem",
+    field: "Feminism",
+    fact: "Co-founded Ms. Magazine and spent decades fighting for women's equality, reproductive rights, and workplace fairness.",
+    emoji: "✊",
+  },
+  {
+    name: "Katherine Johnson",
+    field: "Space",
+    fact: "NASA mathematician whose calculations were so trusted that John Glenn refused to fly unless she personally verified the computer's numbers!",
+    emoji: "🚀",
+  },
+];
+
+export function WomensHistoryMonth() {
+  const [selected, setSelected] = useState<number | null>(null);
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-pink-gp font-bold">
+        Women's History Month 🌸
+      </h3>
+      <p className="text-muted-foreground">
+        March is Women's History Month — celebrating the women who changed
+        everything!
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {WOMENS_HISTORY_FACTS.map((item, i) => (
+          <Card
+            key={item.name}
+            className={`cursor-pointer card-hover border-2 transition-all ${selected === i ? "border-pink-gp bg-pink-light-gp" : "border-border hover:border-pink-gp"}`}
+            onClick={() => setSelected(selected === i ? null : i)}
+            data-ocid={`womenshistory.item.${i + 1}`}
+          >
+            <CardContent className="p-4">
+              <div className="text-2xl mb-1">{item.emoji}</div>
+              <h4 className="font-display font-bold text-sm">{item.name}</h4>
+              <Badge variant="outline" className="text-xs mt-1">
+                {item.field}
+              </Badge>
+              {selected === i && (
+                <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+                  {item.fact}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Card className="bg-pink-light-gp border-none">
+        <CardContent className="p-4 text-sm">
+          <p className="font-bold text-pink-gp mb-1">💡 Did You Know?</p>
+          <p>
+            Women's History Month began as a single week in 1980 (Women's
+            History Week) and was expanded to a full month in 1987 by Congress!
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ===== BLACK HISTORY MONTH =====
+const BLACK_WOMEN_HEROES = [
+  {
+    name: "Harriet Tubman",
+    field: "Freedom Fighter",
+    emoji: "🗽",
+    bio: "Called 'Moses,' she made 13 missions to rescue 70+ people via the Underground Railroad and never lost a passenger.",
+  },
+  {
+    name: "Maya Angelou",
+    field: "Poet & Author",
+    emoji: "✍️",
+    bio: "Her memoir 'I Know Why the Caged Bird Sings' changed literature forever. She read her poem at President Clinton's inauguration.",
+  },
+  {
+    name: "Madam C.J. Walker",
+    field: "Entrepreneur",
+    emoji: "💼",
+    bio: "First self-made female millionaire in America. Built a hair care empire from scratch when doors were closed to Black women.",
+  },
+  {
+    name: "Shirley Chisholm",
+    field: "Politics",
+    emoji: "🏛️",
+    bio: "First Black woman elected to US Congress (1968) and first to run for US President (1972). 'Unbought and Unbossed.'",
+  },
+  {
+    name: "Mae C. Jemison",
+    field: "Astronaut",
+    emoji: "🚀",
+    bio: "First Black woman in space (1992). Also a doctor and teacher who founded a company to make science accessible to students.",
+  },
+  {
+    name: "Toni Morrison",
+    field: "Literature",
+    emoji: "📚",
+    bio: "Nobel Prize-winning novelist. 'Beloved' won the Pulitzer Prize. Her work centered Black experiences at the heart of American literature.",
+  },
+];
+
+export function BlackHistoryMonth() {
+  const [selected, setSelected] = useState<number | null>(null);
+  const [quizAnswer, setQuizAnswer] = useState<string | null>(null);
+  const quiz = {
+    q: "Who was the first Black woman elected to the US Congress?",
+    a: "Shirley Chisholm",
+    options: [
+      "Mae C. Jemison",
+      "Harriet Tubman",
+      "Shirley Chisholm",
+      "Toni Morrison",
+    ],
+  };
+
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      <h3 className="font-display text-2xl text-purple-gp font-bold">
+        Black History Month 💜
+      </h3>
+      <p className="text-muted-foreground">
+        February is Black History Month — celebrating incredible Black women who
+        changed history!
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {BLACK_WOMEN_HEROES.map((hero, i) => (
+          <Card
+            key={hero.name}
+            className={`cursor-pointer card-hover border-2 transition-all ${selected === i ? "border-purple-gp bg-purple-light-gp" : "border-border hover:border-purple-gp"}`}
+            onClick={() => setSelected(selected === i ? null : i)}
+            data-ocid={`blackhistory.item.${i + 1}`}
+          >
+            <CardContent className="p-4">
+              <div className="text-2xl mb-1">{hero.emoji}</div>
+              <h4 className="font-display font-bold text-sm">{hero.name}</h4>
+              <Badge variant="outline" className="text-xs mt-1">
+                {hero.field}
+              </Badge>
+              {selected === i && (
+                <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+                  {hero.bio}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Card className="border-2 border-purple-light-gp">
+        <CardContent className="p-4">
+          <p className="font-bold text-purple-gp mb-3">🧠 Quick Quiz:</p>
+          <p className="text-sm font-bold mb-3">{quiz.q}</p>
+          <div className="flex flex-wrap gap-2">
+            {quiz.options.map((opt) => (
+              <Button
+                key={opt}
+                size="sm"
+                variant="outline"
+                className={`rounded-full ${quizAnswer === opt ? (opt === quiz.a ? "bg-teal-gp text-white border-teal-gp" : "bg-destructive text-white border-destructive") : "hover:border-purple-gp"}`}
+                onClick={() => setQuizAnswer(opt)}
+                data-ocid="blackhistory.toggle"
+              >
+                {opt}
+              </Button>
+            ))}
+          </div>
+          {quizAnswer && (
+            <p className="text-sm mt-3 font-bold">
+              {quizAnswer === quiz.a
+                ? "✅ Correct! Shirley Chisholm was elected in 1968."
+                : "❌ Not quite — it was Shirley Chisholm!"}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ===== COMMUNITY SERVICE =====
+const SERVICE_IDEAS = [
+  {
+    title: "Blanket Drive for Shelters 🧸",
+    desc: "Collect blankets, stuffed animals, and toiletries for your local homeless shelter",
+    impact: "Keeps people warm and makes them feel cared for",
+  },
+  {
+    title: "Read to Kids 📚",
+    desc: "Volunteer to read to younger children at your local library or school",
+    impact: "Builds literacy and creates joy for little ones",
+  },
+  {
+    title: "Clean Up a Park 🌳",
+    desc: "Organize a neighborhood park cleanup with friends and family",
+    impact: "Makes your community beautiful and safer for wildlife",
+  },
+  {
+    title: "Bake for Neighbors 🍪",
+    desc: "Bake cookies or treats for elderly neighbors who live alone",
+    impact: "Reduces loneliness and spreads warmth",
+  },
+  {
+    title: "Pet Shelter Help 🐾",
+    desc: "Walk dogs, socialize cats, or make toys for animals at a shelter",
+    impact: "Helps animals find loving homes faster",
+  },
+  {
+    title: "Letter Writing Campaign ✉️",
+    desc: "Write letters to veterans, elderly in care homes, or hospitalized kids",
+    impact: "Brighten someone's day who needs a reminder they matter",
+  },
+  {
+    title: "Community Garden 🌻",
+    desc: "Help plant and maintain a community garden, then donate the food",
+    impact: "Feeds families and builds community connections",
+  },
+];
+
+export function CommunityService() {
+  const [checked, setChecked] = useState<boolean[]>(
+    new Array(SERVICE_IDEAS.length).fill(false),
+  );
+  const done = checked.filter(Boolean).length;
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-coral-gp font-bold">
+        Community Service 💖
+      </h3>
+      <p className="text-muted-foreground">
+        Small acts of service create HUGE ripples! Check off what you've done or
+        want to do.
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {SERVICE_IDEAS.map((idea, i) => (
+          <button
+            key={idea.title}
+            type="button"
+            className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all text-left w-full ${checked[i] ? "bg-coral-light-gp border-coral-gp" : "border-border hover:border-coral-gp"}`}
+            onClick={() =>
+              setChecked((prev) => {
+                const n = [...prev];
+                n[i] = !n[i];
+                return n;
+              })
+            }
+            data-ocid={`service.checkbox.${i + 1}`}
+          >
+            <Checkbox
+              checked={checked[i]}
+              className="mt-1 border-coral-gp data-[state=checked]:bg-coral-gp shrink-0"
+            />
+            <div>
+              <p
+                className={`font-bold text-sm ${checked[i] ? "line-through text-muted-foreground" : ""}`}
+              >
+                {idea.title}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">{idea.desc}</p>
+              <p className="text-xs text-coral-gp mt-1 font-bold">
+                💖 {idea.impact}
+              </p>
+            </div>
+          </button>
+        ))}
+      </div>
+      {done > 0 && (
+        <Card
+          className="bg-coral-light-gp border-none text-center"
+          data-ocid="service.success_state"
+        >
+          <CardContent className="p-4">
+            <p className="font-display font-bold text-coral-gp">
+              You've done {done} service {done === 1 ? "act" : "acts"}! The
+              world is better because of you! 💖
+            </p>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

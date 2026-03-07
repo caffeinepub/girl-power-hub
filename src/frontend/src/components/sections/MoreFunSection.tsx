@@ -2181,3 +2181,321 @@ export function BookNook() {
     </div>
   );
 }
+
+// ===== DANCE PARTY PLAYLIST =====
+const GIRL_POWER_SONGS = [
+  { title: "Roar", artist: "Katy Perry", vibe: "Empowering", emoji: "🦁" },
+  {
+    title: "Run the World (Girls)",
+    artist: "Beyoncé",
+    vibe: "Boss Energy",
+    emoji: "👑",
+  },
+  { title: "Girl on Fire", artist: "Alicia Keys", vibe: "Fierce", emoji: "🔥" },
+  {
+    title: "Fight Song",
+    artist: "Rachel Platten",
+    vibe: "Uplifting",
+    emoji: "✊",
+  },
+  {
+    title: "Stronger",
+    artist: "Kelly Clarkson",
+    vibe: "Resilience",
+    emoji: "💪",
+  },
+  {
+    title: "Shake It Off",
+    artist: "Taylor Swift",
+    vibe: "Carefree Fun",
+    emoji: "🎉",
+  },
+  {
+    title: "Worth It",
+    artist: "Fifth Harmony",
+    vibe: "Confidence",
+    emoji: "💎",
+  },
+  { title: "Brave", artist: "Sara Bareilles", vibe: "Courage", emoji: "🌟" },
+  { title: "Good as Hell", artist: "Lizzo", vibe: "Self-Love", emoji: "🌈" },
+  { title: "Woman", artist: "Little Mix", vibe: "Girl Power", emoji: "👸" },
+];
+
+const DANCE_MOVES = [
+  {
+    move: "The Power Pose 💪",
+    steps:
+      "Stand tall, hands on hips, head up — hold for 8 counts. Then jump and reach both arms to the sky!",
+  },
+  {
+    move: "The Spin & Clap 🎉",
+    steps:
+      "Spin in a circle with arms out, then clap twice above your head — repeat to the beat!",
+  },
+  {
+    move: "The Snap Walk 😎",
+    steps:
+      "Walk forward snapping fingers, one arm pumping, with attitude — 4 steps forward, 4 back!",
+  },
+  {
+    move: "The Heart Hands Jump 💖",
+    steps:
+      "Make a heart with your hands, hold at chest level, then jump and throw arms wide apart!",
+  },
+  {
+    move: "The Star Jump ⭐",
+    steps: "Jump with arms and legs wide like a star — land soft, then pose!",
+  },
+];
+
+export function DancePartyPlaylist() {
+  const [tab, setTab] = useState<"playlist" | "moves">("playlist");
+  const [favs, setFavs] = useState<Set<number>>(new Set());
+
+  const toggleFav = (i: number) =>
+    setFavs((prev) => {
+      const n = new Set(prev);
+      n.has(i) ? n.delete(i) : n.add(i);
+      return n;
+    });
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-pink-gp font-bold">
+        Dance Party Playlist 💃
+      </h3>
+      <p className="text-muted-foreground">
+        Girl power songs + dance moves = the best party ever! 🎉
+      </p>
+      <div className="flex gap-2">
+        <Button
+          size="sm"
+          variant={tab === "playlist" ? "default" : "outline"}
+          className={`rounded-full ${tab === "playlist" ? "bg-pink-gp text-white" : "border-pink-gp text-pink-gp"}`}
+          onClick={() => setTab("playlist")}
+          data-ocid="dance.tab"
+        >
+          🎵 Playlist
+        </Button>
+        <Button
+          size="sm"
+          variant={tab === "moves" ? "default" : "outline"}
+          className={`rounded-full ${tab === "moves" ? "bg-pink-gp text-white" : "border-pink-gp text-pink-gp"}`}
+          onClick={() => setTab("moves")}
+          data-ocid="dance.tab"
+        >
+          💃 Dance Moves
+        </Button>
+      </div>
+      {tab === "playlist" ? (
+        <div className="flex flex-col gap-2">
+          {GIRL_POWER_SONGS.map((song, i) => (
+            <div
+              key={song.title}
+              className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${favs.has(i) ? "border-pink-gp bg-pink-light-gp" : "border-border hover:border-pink-gp"}`}
+              data-ocid={`dance.item.${i + 1}`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-xl">{song.emoji}</span>
+                <div>
+                  <p className="font-bold text-sm">{song.title}</p>
+                  <p className="text-xs text-muted-foreground">{song.artist}</p>
+                  <Badge variant="outline" className="text-xs mt-1">
+                    {song.vibe}
+                  </Badge>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggleFav(i)}
+                className={`text-lg transition-transform hover:scale-125 ${favs.has(i) ? "opacity-100" : "opacity-40"}`}
+                data-ocid={`dance.toggle.${i + 1}`}
+              >
+                💖
+              </button>
+            </div>
+          ))}
+          {favs.size > 0 && (
+            <p className="text-sm text-pink-gp font-bold text-center">
+              {favs.size} songs in your favorites! ❤️
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {DANCE_MOVES.map((m, i) => (
+            <Card
+              key={m.move}
+              className="border-2 border-pink-light-gp"
+              data-ocid={`dance.item.${i + 1}`}
+            >
+              <CardContent className="p-4">
+                <h4 className="font-display font-bold text-pink-gp">
+                  {m.move}
+                </h4>
+                <p className="text-sm text-muted-foreground mt-1">{m.steps}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ===== GIRL SCOUT MAGIC =====
+const BADGE_IDEAS = [
+  {
+    badge: "Nature Explorer 🌿",
+    color: "bg-teal-light-gp border-teal-gp",
+    tasks: [
+      "Identify 5 types of birds",
+      "Plant something from seed",
+      "Pick up 10 pieces of litter",
+      "Make a bird feeder from recycled materials",
+      "Press and label 3 different leaves",
+    ],
+  },
+  {
+    badge: "Kitchen Boss 🍳",
+    color: "bg-coral-light-gp border-coral-gp",
+    tasks: [
+      "Make a meal without adult help",
+      "Bake cookies from scratch",
+      "Learn 5 different knife safety rules",
+      "Prepare a healthy snack for your family",
+      "Write down your own original recipe",
+    ],
+  },
+  {
+    badge: "Art Superstar 🎨",
+    color: "bg-purple-light-gp border-purple-gp",
+    tasks: [
+      "Complete a drawing challenge 3 days in a row",
+      "Create art using recycled materials",
+      "Teach someone a craft you know",
+      "Display your art somewhere others can see it",
+      "Make a handmade card for someone special",
+    ],
+  },
+  {
+    badge: "Friendship Champion 💕",
+    color: "bg-pink-light-gp border-pink-gp",
+    tasks: [
+      "Write a letter to a friend or family member",
+      "Do something kind without being asked",
+      "Resolve a disagreement peacefully",
+      "Include someone who looks left out",
+      "Plan a fun activity for your friends",
+    ],
+  },
+  {
+    badge: "Science Wizard 🔬",
+    color: "bg-yellow-light-gp border-yellow-gp",
+    tasks: [
+      "Complete 3 home science experiments",
+      "Research and present on a female scientist",
+      "Keep a science observation journal for 1 week",
+      "Build something using engineering principles",
+      "Teach a younger kid one science concept",
+    ],
+  },
+];
+
+export function GirlScoutMagic() {
+  const [progress, setProgress] = useState<Record<string, boolean[]>>({});
+  const [expanded, setExpanded] = useState<number | null>(null);
+
+  const toggle = (badgeName: string, taskIdx: number) => {
+    setProgress((prev) => {
+      const arr = prev[badgeName] || new Array(5).fill(false);
+      const n = [...arr];
+      n[taskIdx] = !n[taskIdx];
+      return { ...prev, [badgeName]: n };
+    });
+  };
+
+  const earnedCount = (badgeName: string) =>
+    (progress[badgeName] || []).filter(Boolean).length;
+
+  return (
+    <div className="flex flex-col gap-5 py-2">
+      <h3 className="font-display text-2xl text-yellow-gp font-bold">
+        Girl Scout Magic 🏅
+      </h3>
+      <p className="text-muted-foreground">
+        Earn DIY badges by completing challenges! Check off tasks as you go. 5/5
+        = you've earned the badge! 🏅
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {BADGE_IDEAS.map((b, i) => (
+          <Card
+            key={b.badge}
+            className={`border-2 ${b.color} transition-all`}
+            data-ocid={`girlscout.item.${i + 1}`}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-display font-bold text-sm">{b.badge}</h4>
+                <Badge
+                  className={
+                    earnedCount(b.badge) === 5
+                      ? "bg-yellow-gp text-foreground"
+                      : "bg-muted text-muted-foreground"
+                  }
+                >
+                  {earnedCount(b.badge)}/5
+                </Badge>
+              </div>
+              <div className="flex gap-1 mb-3">
+                {b.tasks.map((_task, ti) => (
+                  <div
+                    key={`${b.badge}-${ti}`}
+                    className={`h-2 flex-1 rounded-full ${progress[b.badge]?.[ti] ? "bg-yellow-gp" : "bg-muted"}`}
+                  />
+                ))}
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="rounded-full text-xs border-current"
+                onClick={() => setExpanded(expanded === i ? null : i)}
+                data-ocid={`girlscout.toggle.${i + 1}`}
+              >
+                {expanded === i ? "Hide Tasks ↑" : "Show Tasks ↓"}
+              </Button>
+              {expanded === i && (
+                <div className="mt-3 flex flex-col gap-1">
+                  {b.tasks.map((task, ti) => (
+                    <button
+                      key={task}
+                      type="button"
+                      className="flex items-center gap-2 text-left w-full bg-transparent border-0 p-0 cursor-pointer"
+                      onClick={() => toggle(b.badge, ti)}
+                      data-ocid={`girlscout.checkbox.${ti + 1}`}
+                    >
+                      <Checkbox
+                        checked={progress[b.badge]?.[ti] || false}
+                        className="shrink-0"
+                      />
+                      <span
+                        className={`text-xs ${progress[b.badge]?.[ti] ? "line-through text-muted-foreground" : ""}`}
+                      >
+                        {task}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {earnedCount(b.badge) === 5 && (
+                <p className="text-xs font-bold text-yellow-gp mt-2">
+                  🏅 BADGE EARNED! Amazing!
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
