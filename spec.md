@@ -1,24 +1,25 @@
 # Girl Power Hub
 
 ## Current State
-The app has 13 section categories, each with 10-20 interactive activities. Categories include Wellness, Journaling, Games, Science, Crafts, Nature, History, Life Skills, Recipes, More Fun, Empowerment, Get Off Your Phone, and Stop Doom Scrolling.
+The app has 13 section categories with 100+ interactive activities, organized into a grid layout with search, sidebar navigation, and individual section views. Each section is a React component in its own file under `src/frontend/src/components/sections/`.
 
 ## Requested Changes (Diff)
 
 ### Add
-- A new section category called "Mindset & Growth" with 5 interactive activities:
-  1. **Growth Mindset Quiz** - Interactive quiz about having a growth mindset vs fixed mindset with explanations
-  2. **Affirmation Generator** - Generates daily positive affirmations the user can save/copy
-  3. **Fear Crusher** - Name a fear, get tips and brave-girl stories to face it
-  4. **Mistake Journal** - Log a mistake and reframe it as a learning moment
-  5. **Power Words Wall** - Build a personal collection of words that make you feel powerful
+- A new section category: **"Make Bike Riding Fun"** (emoji: 🚲) with 6 activities:
+  1. **Fun Things to Do on Your Bike** – A rich, scrollable list of fun bike activities to do with friends and alone (solo rides, races, scavenger hunts, decorating your bike, night rides, trick practice, etc.)
+  2. **Bike Scavenger Hunt** – An interactive outdoor scavenger hunt checklist designed for bike riders
+  3. **Decorate Your Bike** – A creative guide with ideas for personalizing your bike (streamers, stickers, bells, paint, baskets, lights)
+  4. **Bike Safety Star** – An interactive safety quiz/checklist covering helmet fit, hand signals, road rules, and gear
+  5. **Bike Ride Playlist Builder** – Let girls pick a mood and get a curated playlist theme + activity idea to match their ride vibe
+  6. **Ride Log & Goals** – A localStorage-powered ride tracker where girls can log rides and set distance/time goals
 
 ### Modify
-- App.tsx: Import the new MindsetSection components and add the new category to SECTION_CATEGORIES
+- `App.tsx` – Import the new section components and add a new `SECTION_CATEGORIES` entry for "Make Bike Riding Fun"
 
 ### Remove
 - Nothing removed
 
 ## Implementation Plan
-1. Create `/src/frontend/src/components/sections/MindsetSection.tsx` with 5 exported components
-2. Update `App.tsx` to import the new components and add the new category entry
+1. Create `/src/frontend/src/components/sections/BikeFunSection.tsx` with 6 exported components
+2. Update `App.tsx` to import all 6 components and register the new "bike-fun" category in `SECTION_CATEGORIES`

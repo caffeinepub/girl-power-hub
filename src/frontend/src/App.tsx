@@ -192,6 +192,16 @@ import {
   PowerWordsWall,
 } from "@/components/sections/MindsetSection";
 
+// ===== Bike Fun Imports =====
+import {
+  BikeActivitiesList,
+  BikePlaylistBuilder,
+  BikeRideLog,
+  BikeSafetyStar,
+  BikeScavengerHunt,
+  DecorateYourBike,
+} from "@/components/sections/BikeFunSection";
+
 // ===== Screen Time Imports =====
 import {
   BedtimeWindDown,
@@ -1271,6 +1281,51 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Power Words Wall",
         emoji: "🌟",
         component: PowerWordsWall,
+      },
+    ],
+  },
+  {
+    id: "bike-fun",
+    label: "Make Bike Riding Fun",
+    emoji: "🚲",
+    color: "bg-teal-light-gp",
+    badgeClass: "bg-teal-gp text-white",
+    items: [
+      {
+        id: "bike-activities",
+        label: "Fun Things To Do on Your Bike",
+        emoji: "🚴‍♀️",
+        component: BikeActivitiesList,
+      },
+      {
+        id: "bike-scavenger-hunt",
+        label: "Bike Scavenger Hunt",
+        emoji: "🔍",
+        component: BikeScavengerHunt,
+      },
+      {
+        id: "decorate-bike",
+        label: "Decorate Your Bike",
+        emoji: "✨",
+        component: DecorateYourBike,
+      },
+      {
+        id: "bike-safety",
+        label: "Bike Safety Star",
+        emoji: "⭐",
+        component: BikeSafetyStar,
+      },
+      {
+        id: "bike-playlist",
+        label: "Ride Playlist Builder",
+        emoji: "🎵",
+        component: BikePlaylistBuilder,
+      },
+      {
+        id: "bike-log",
+        label: "Ride Log & Goals",
+        emoji: "📋",
+        component: BikeRideLog,
       },
     ],
   },
