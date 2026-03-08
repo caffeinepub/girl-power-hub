@@ -10,6 +10,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/sonner";
 import { useRef, useState } from "react";
 
+// ===== Glow Up Imports =====
+import {
+  BFFBondTest,
+  ComplimentCannon,
+  ConfidenceKaraoke,
+  DreamDayPlanner,
+  GirlPowerRadio,
+  GlowUpGoals,
+  SuperpowerSelector,
+} from "@/components/sections/GlowUpSection";
+
 // ===== Wellness Imports =====
 import {
   AnxietyToolkit,
@@ -244,6 +255,57 @@ interface SectionCategory {
 }
 
 const SECTION_CATEGORIES: SectionCategory[] = [
+  {
+    id: "glow-up",
+    label: "Glow Up Your World",
+    emoji: "✨",
+    color: "bg-pink-light-gp",
+    badgeClass: "bg-pink-gp text-white",
+    items: [
+      {
+        id: "confidence-karaoke",
+        label: "Confidence Karaoke",
+        emoji: "🎤",
+        component: ConfidenceKaraoke,
+      },
+      {
+        id: "superpower-selector",
+        label: "Superpower Selector",
+        emoji: "🦸‍♀️",
+        component: SuperpowerSelector,
+      },
+      {
+        id: "compliment-cannon",
+        label: "Compliment Cannon",
+        emoji: "🎉",
+        component: ComplimentCannon,
+      },
+      {
+        id: "dream-day-planner",
+        label: "Dream Day Planner",
+        emoji: "🌈",
+        component: DreamDayPlanner,
+      },
+      {
+        id: "glow-up-goals",
+        label: "Glow-Up Goals",
+        emoji: "🌸",
+        component: GlowUpGoals,
+      },
+      {
+        id: "bff-bond-test",
+        label: "BFF Bond Test",
+        emoji: "💖",
+        component: BFFBondTest,
+      },
+      {
+        id: "girl-power-radio",
+        label: "Girl Power Radio",
+        emoji: "🎵",
+        component: GirlPowerRadio,
+      },
+    ],
+  },
   {
     id: "wellness",
     label: "Wellness & Mindfulness",
