@@ -1,26 +1,32 @@
 # Girl Power Hub
 
 ## Current State
-A multi-section empowerment web app for girls with 14+ categories and 100+ interactive activities. Each activity is a self-contained React component. New sections are added as new files and registered in App.tsx's SECTION_CATEGORIES array.
+The app has 15 sections with 100+ interactive activities across all categories. The most notable is "Glow Up Your World" (7 activities) as the flagship section.
 
 ## Requested Changes (Diff)
 
 ### Add
-- New section: **"Glow Up Your World"** (id: `glow-up`) with 7 high-quality, deeply interactive activities:
-  1. **Confidence Karaoke** – Pick a girl-power anthem lyric and "perform" it with animated stage lights, a mic drop button, crowd cheers, and a score
-  2. **Superpower Selector** – An animated quiz that reveals your unique superpower with a custom hero badge you can "unlock" and display
-  3. **Compliment Cannon** – Fire compliments at yourself or a friend with animated confetti, customizable compliment packs (funny, heartfelt, brave), and a saved gallery
-  4. **Dream Day Planner** – Build your perfect dream day hour-by-hour, pick activities, meals, people, and moods, then generate a beautiful "Day Card" to save
-  5. **Glow-Up Goals** – A visual 30-day challenge tracker where you pick a glow-up goal (kindness, fitness, creativity, courage), check off daily wins, and watch a progress flower bloom
-  6. **BFF Bond Test** – A fun friendship quiz with personality matchups, a compatibility score, and a friendship "certificate" you can name and display
-  7. **Girl Power Radio** – Build your ultimate girl-power playlist by picking songs by mood/vibe, get a custom playlist name generated, and "air guitar" along with animated music visualizer
+- A brand new section called **"Ultimate Girl Challenge Zone"** with exactly 10 activities -- designed to be the most fun, engaging, and exciting section of the entire app. Activities should be highly interactive, game-like, and deeply satisfying to complete.
 
 ### Modify
-- `App.tsx` – Import all 7 new components from `GlowUpSection.tsx` and register the new `glow-up` category in `SECTION_CATEGORIES` with a hot-pink/gold gradient badge, positioned as the first section (top of the list)
+- App.tsx: Import and register the new section in SECTION_CATEGORIES
+- The new section should appear near the top (after "Glow Up Your World") to emphasize it as a crown jewel section
 
 ### Remove
-- Nothing removed
+- Nothing
 
 ## Implementation Plan
-1. Create `src/frontend/src/components/sections/GlowUpSection.tsx` with all 7 components exported
-2. Update `App.tsx` to import and register the new section at the top of SECTION_CATEGORIES
+
+1. Create `/src/frontend/src/components/sections/ChallengeZoneSection.tsx` with 10 top-tier activities:
+   - **Spin the Dare Wheel** - An animated spinning wheel with 20 fun dares/challenges
+   - **Emoji Mood Dance Party** - Pick your mood, get a dance move with animated emoji dancer
+   - **Design Your Dream Bedroom** - Drag-and-drop room builder with furniture stickers
+   - **Ultimate Trivia Showdown** - Fast-paced timed trivia with score streaks and confetti
+   - **Create Your Own Superhero** - Costume/power/name generator with a hero card reveal
+   - **BFF Compatibility Test** - A fun quiz that generates a friendship compatibility score + certificate
+   - **Talent Show Buzzer** - An interactive buzzer game where you pick a talent and perform for a virtual crowd
+   - **Bucket List Builder** - Check off dream activities from categories, unlock badges, get a shareable bucket list card
+   - **Glow Stick Dance Challenge** - Animated glow stick visual with a timer-based freestyle challenge prompt
+   - **Star Girl Awards** - Vote for yourself and friends across 10 fun award categories, generates a personalized award certificate
+
+2. Update App.tsx to import all 10 components and add the new section to SECTION_CATEGORIES with a special rainbow/gold color theme

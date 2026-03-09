@@ -10,6 +10,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/sonner";
 import { useRef, useState } from "react";
 
+// ===== Challenge Zone Imports =====
+import {
+  BFFCompatibilityTest,
+  BucketListBuilder,
+  CreateYourSuperhero,
+  DesignYourDreamBedroom,
+  EmojiMoodDanceParty,
+  GlowStickDanceChallenge,
+  SpinTheDareWheel,
+  StarGirlAwards,
+  TalentShowBuzzer,
+  UltimateTrivia,
+} from "@/components/sections/ChallengeZoneSection";
+
 // ===== Glow Up Imports =====
 import {
   BFFBondTest,
@@ -303,6 +317,75 @@ const SECTION_CATEGORIES: SectionCategory[] = [
         label: "Girl Power Radio",
         emoji: "🎵",
         component: GirlPowerRadio,
+      },
+    ],
+  },
+  {
+    id: "challenge-zone",
+    label: "Ultimate Girl Challenge Zone",
+    emoji: "🏆",
+    color: "bg-yellow-light-gp",
+    badgeClass: "bg-pink-gp text-white",
+    items: [
+      {
+        id: "spin-dare-wheel",
+        label: "Spin the Dare Wheel",
+        emoji: "🎡",
+        component: SpinTheDareWheel,
+      },
+      {
+        id: "emoji-dance-party",
+        label: "Emoji Dance Party",
+        emoji: "💃",
+        component: EmojiMoodDanceParty,
+      },
+      {
+        id: "dream-bedroom",
+        label: "Design Your Bedroom",
+        emoji: "🛋️",
+        component: DesignYourDreamBedroom,
+      },
+      {
+        id: "ultimate-trivia",
+        label: "Ultimate Trivia",
+        emoji: "⚡",
+        component: UltimateTrivia,
+      },
+      {
+        id: "create-superhero",
+        label: "Create Your Superhero",
+        emoji: "🦸‍♀️",
+        component: CreateYourSuperhero,
+      },
+      {
+        id: "bff-compatibility",
+        label: "BFF Compatibility Test",
+        emoji: "💕",
+        component: BFFCompatibilityTest,
+      },
+      {
+        id: "talent-show-buzzer",
+        label: "Talent Show Buzzer",
+        emoji: "🎤",
+        component: TalentShowBuzzer,
+      },
+      {
+        id: "bucket-list",
+        label: "Bucket List Builder",
+        emoji: "🌟",
+        component: BucketListBuilder,
+      },
+      {
+        id: "glow-stick-dance",
+        label: "Glow Stick Dance",
+        emoji: "🌈",
+        component: GlowStickDanceChallenge,
+      },
+      {
+        id: "star-girl-awards",
+        label: "Star Girl Awards",
+        emoji: "🏅",
+        component: StarGirlAwards,
       },
     ],
   },
