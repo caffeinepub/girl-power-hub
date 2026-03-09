@@ -2376,3 +2376,1721 @@ export function StarGirlAwards() {
     </div>
   );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 11. WOULD YOU RATHER?
+// ─────────────────────────────────────────────────────────────────────────────
+const WYR_QUESTIONS = [
+  ["Have rainbow hair forever", "Have glitter skin forever"],
+  ["Be able to fly", "Be able to turn invisible"],
+  ["Only eat pizza for a year", "Only eat tacos for a year"],
+  ["Have a pet unicorn", "Have a pet dragon"],
+  ["Live in a treehouse", "Live in a underwater bubble"],
+  ["Be the funniest person alive", "Be the smartest person alive"],
+  ["Speak every language", "Play every instrument"],
+  ["Have a slide from your bedroom", "Have a pool in your backyard"],
+  ["Meet your favorite singer", "Be in your favorite movie"],
+  ["Never feel cold", "Never feel hot"],
+  ["Have 100 best friends", "Have 1 perfect best friend"],
+  ["Be a princess", "Be a scientist who discovers a new planet"],
+  ["Only wear pink forever", "Only wear purple forever"],
+  ["Be famous at age 12", "Be famous at age 30 for something amazing"],
+  ["Have a magic wand", "Have a time machine"],
+  [
+    "Always be the first one picked for teams",
+    "Always win at every board game",
+  ],
+  ["Have free ice cream for life", "Have free movie tickets for life"],
+  ["Talk to animals", "Read people's minds"],
+  ["Be in a band", "Write a bestselling book"],
+  ["Live in Paris", "Live in Tokyo"],
+];
+
+export function WouldYouRather() {
+  const [idx, setIdx] = useState(() =>
+    Math.floor(Math.random() * WYR_QUESTIONS.length),
+  );
+  const [chosen, setChosen] = useState<null | 0 | 1>(null);
+  const [votesA, setVotesA] = useState(Math.floor(Math.random() * 60) + 20);
+  const [votesB, setVotesB] = useState(Math.floor(Math.random() * 60) + 20);
+  const [streak, setStreak] = useState(0);
+
+  const next = () => {
+    setIdx(Math.floor(Math.random() * WYR_QUESTIONS.length));
+    setChosen(null);
+    setVotesA(Math.floor(Math.random() * 60) + 20);
+    setVotesB(Math.floor(Math.random() * 60) + 20);
+  };
+
+  const pick = (side: 0 | 1) => {
+    setChosen(side);
+    setStreak((s) => s + 1);
+  };
+
+  const q = WYR_QUESTIONS[idx];
+  const total = votesA + votesB + 1;
+  const pctA = Math.round(((votesA + (chosen === 0 ? 1 : 0)) / total) * 100);
+  const pctB = 100 - pctA;
+
+  return (
+    <div className="flex flex-col items-center gap-6 p-6 min-h-[400px]">
+      <div className="text-center">
+        <div className="text-4xl mb-2">🤔</div>
+        <h2 className="text-2xl font-bold text-purple-700">
+          Would You Rather?
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">
+          🔥 Streak: {streak} answered
+        </p>
+      </div>
+      <p className="text-lg font-semibold text-center text-pink-600">
+        Which would YOU choose?
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
+        {[q[0], q[1]].map((opt, i) => (
+          <button
+            type="button"
+            key={opt}
+            data-ocid={`wyr.option.${i + 1}`}
+            onClick={() => pick(i as 0 | 1)}
+            className={`rounded-2xl p-5 text-center font-bold text-lg border-4 transition-all ${
+              chosen === null
+                ? "border-purple-300 bg-purple-50 hover:bg-purple-100 hover:scale-105 cursor-pointer"
+                : chosen === i
+                  ? "border-green-400 bg-green-50 scale-105"
+                  : "border-gray-200 bg-gray-50 opacity-60"
+            }`}
+          >
+            {i === 0 ? "🅰️" : "🅱️"} {opt}
+            {chosen !== null && (
+              <div className="mt-2 text-sm font-normal text-gray-600">
+                <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                  <div
+                    className="bg-purple-400 h-2 rounded-full transition-all duration-700"
+                    style={{ width: `${i === 0 ? pctA : pctB}%` }}
+                  />
+                </div>
+                {i === 0 ? pctA : pctB}% would choose this
+              </div>
+            )}
+          </button>
+        ))}
+      </div>
+      {chosen !== null && (
+        <Button
+          data-ocid="wyr.next_button"
+          onClick={next}
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full px-8"
+        >
+          Next Question ➡️
+        </Button>
+      )}
+      {chosen === null && (
+        <p className="text-gray-400 text-sm animate-pulse">
+          Tap a choice to reveal what everyone thinks!
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 12. MAD LIBS STORY MAKER
+// ─────────────────────────────────────────────────────────────────────────────
+const MAD_LIBS_TEMPLATES = [
+  {
+    title: "The Magic Adventure",
+    blanks: [
+      "a girl's name",
+      "an animal",
+      "a color",
+      "a food",
+      "an action verb",
+      "a place",
+    ],
+    template: (w: string[]) =>
+      `Once upon a time, ${w[0]} found a ${w[1]} that was completely ${w[2]}. She fed it some ${w[3]} and it started to ${w[4]}! Together they flew all the way to ${w[5]} and everyone cheered!`,
+  },
+  {
+    title: "School Day Chaos",
+    blanks: [
+      "your name",
+      "a teacher's name",
+      "a weird food",
+      "an animal noise",
+      "a superpower",
+      "a number",
+    ],
+    template: (w: string[]) =>
+      `Today at school, ${w[0]} accidentally brought ${w[2]} for lunch. Ms. ${w[1]} opened it and made a huge ${w[3]} sound! Then ${w[0]} used her superpower of ${w[4]} to fix everything in exactly ${w[5]} seconds.`,
+  },
+  {
+    title: "The Secret Garden",
+    blanks: [
+      "a flower name",
+      "an adjective",
+      "a best friend's name",
+      "a smell",
+      "an emotion",
+      "a dance move",
+    ],
+    template: (w: string[]) =>
+      `Deep in the ${w[1]} garden, a giant ${w[0]} bloomed. ${w[2]} leaned in to smell it — it smelled like ${w[3]}! She felt so ${w[4]} that she immediately started doing the ${w[5]} right there among the flowers.`,
+  },
+];
+
+export function MadLibsStoryMaker() {
+  const [tIdx, setTIdx] = useState(0);
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [inputs, setInputs] = useState<string[]>(Array(6).fill(""));
+  const [phase, setPhase] = useState<"fill" | "story">("fill");
+  const template = MAD_LIBS_TEMPLATES[tIdx];
+
+  const submit = () => {
+    if (inputs.some((v) => !v.trim())) {
+      toast("Fill in all the blanks first! 😄");
+      return;
+    }
+    setAnswers(inputs);
+    setPhase("story");
+  };
+
+  const reset = () => {
+    setInputs(Array(template.blanks.length).fill(""));
+    setPhase("fill");
+    setTIdx((t) => (t + 1) % MAD_LIBS_TEMPLATES.length);
+  };
+
+  return (
+    <div className="flex flex-col gap-5 p-6">
+      <div className="text-center">
+        <div className="text-4xl mb-1">📖</div>
+        <h2 className="text-2xl font-bold text-pink-600">
+          Mad Libs Story Maker
+        </h2>
+        <p className="text-sm text-gray-500">
+          Story: <strong>{template.title}</strong>
+        </p>
+      </div>
+      {phase === "fill" ? (
+        <div className="flex flex-col gap-3 max-w-md mx-auto w-full">
+          <p className="text-center text-gray-600 text-sm">
+            Fill in the blanks — don't peek at the story!
+          </p>
+          {template.blanks.map((label, i) => (
+            <div key={`blank-${label}`} className="flex flex-col gap-1">
+              <label
+                htmlFor={`madlibs-input-${i}`}
+                className="text-xs font-semibold text-purple-600 uppercase"
+              >
+                {label}
+              </label>
+              <Input
+                id={`madlibs-input-${i}`}
+                data-ocid={`madlibs.input.${i + 1}`}
+                value={inputs[i]}
+                onChange={(e) => {
+                  const n = [...inputs];
+                  n[i] = e.target.value;
+                  setInputs(n);
+                }}
+                placeholder={`Enter ${label}...`}
+                className="rounded-xl border-pink-200 focus:border-pink-400"
+              />
+            </div>
+          ))}
+          <Button
+            data-ocid="madlibs.submit_button"
+            onClick={submit}
+            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full mt-2"
+          >
+            Reveal My Story! 🎉
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-4 max-w-lg mx-auto">
+          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-6 text-center text-lg leading-relaxed">
+            {template.template(answers)}
+          </div>
+          <Button
+            data-ocid="madlibs.next_button"
+            onClick={reset}
+            className="bg-purple-500 hover:bg-purple-600 text-white rounded-full px-8"
+          >
+            Try Another Story! 📚
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 13. BRAIN TEASER RIDDLES
+// ─────────────────────────────────────────────────────────────────────────────
+const RIDDLES = [
+  {
+    q: "I have hands but I can't clap. What am I?",
+    a: "A clock",
+    hint: "You check me to know the time.",
+  },
+  {
+    q: "The more you take, the more you leave behind. What am I?",
+    a: "Footsteps",
+    hint: "Think about walking.",
+  },
+  {
+    q: "I'm light as a feather, but even the strongest person can't hold me for more than 5 minutes. What am I?",
+    a: "Your breath",
+    hint: "You do it without thinking.",
+  },
+  {
+    q: "I speak without a mouth and hear without ears. What am I?",
+    a: "An echo",
+    hint: "You hear me in mountains and tunnels.",
+  },
+  {
+    q: "What gets wetter as it dries?",
+    a: "A towel",
+    hint: "You use me after a shower.",
+  },
+  {
+    q: "I have cities but no houses. I have mountains but no trees. I have water but no fish. What am I?",
+    a: "A map",
+    hint: "You use me to find directions.",
+  },
+  {
+    q: "What can run but never walks, has a mouth but never talks, has a head but never weeps?",
+    a: "A river",
+    hint: "It flows through the land.",
+  },
+  {
+    q: "I'm always in front of you but can never be seen. What am I?",
+    a: "The future",
+    hint: "Think about time.",
+  },
+  {
+    q: "What has a heart that doesn't beat?",
+    a: "An artichoke",
+    hint: "It's a vegetable.",
+  },
+  {
+    q: "The more you share me, the more you have. What am I?",
+    a: "Knowledge (or happiness!)",
+    hint: "It's not something you can touch.",
+  },
+  {
+    q: "What has keys but no locks, space but no room, and you can enter but can't go inside?",
+    a: "A keyboard",
+    hint: "You use it to type!",
+  },
+  {
+    q: "What breaks but never falls, and falls but never breaks?",
+    a: "Day and night",
+    hint: "Think about time of day.",
+  },
+];
+
+export function BrainTeaserRiddles() {
+  const [idx, setIdx] = useState(() =>
+    Math.floor(Math.random() * RIDDLES.length),
+  );
+  const [phase, setPhase] = useState<"guess" | "hint" | "answer">("guess");
+  const [guess, setGuess] = useState("");
+  const [score, setScore] = useState(0);
+  const [total, setTotal] = useState(0);
+  const riddle = RIDDLES[idx];
+
+  const checkAnswer = () => {
+    const correct = riddle.a.toLowerCase().split(/[,(]/)[0].trim();
+    const isRight =
+      guess.toLowerCase().includes(correct.split(" ")[0].toLowerCase()) ||
+      correct.toLowerCase().includes(guess.toLowerCase().trim());
+    if (isRight) {
+      toast("🎉 You got it! So smart!");
+      setScore((s) => s + 1);
+    } else {
+      toast("Not quite — here's the answer!");
+    }
+    setTotal((t) => t + 1);
+    setPhase("answer");
+  };
+
+  const next = () => {
+    setIdx(Math.floor(Math.random() * RIDDLES.length));
+    setGuess("");
+    setPhase("guess");
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-5 p-6 min-h-[380px]">
+      <div className="text-center">
+        <div className="text-4xl mb-1">🧩</div>
+        <h2 className="text-2xl font-bold text-indigo-600">
+          Brain Teaser Riddles
+        </h2>
+        <p className="text-sm text-gray-500">
+          Score: {score}/{total} correct
+        </p>
+      </div>
+      <div className="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-5 max-w-md text-center text-lg font-medium text-indigo-800">
+        {riddle.q}
+      </div>
+      {phase === "guess" && (
+        <div className="flex flex-col gap-3 w-full max-w-sm">
+          <Input
+            data-ocid="riddle.input"
+            value={guess}
+            onChange={(e) => setGuess(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && guess && checkAnswer()}
+            placeholder="Your answer..."
+            className="rounded-xl"
+          />
+          <div className="flex gap-2">
+            <Button
+              data-ocid="riddle.submit_button"
+              onClick={checkAnswer}
+              disabled={!guess}
+              className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full"
+            >
+              Check Answer ✅
+            </Button>
+            <Button
+              data-ocid="riddle.hint_button"
+              variant="outline"
+              onClick={() => setPhase("hint")}
+              className="rounded-full border-indigo-300 text-indigo-600"
+            >
+              💡 Hint
+            </Button>
+          </div>
+        </div>
+      )}
+      {phase === "hint" && (
+        <div className="flex flex-col items-center gap-3 w-full max-w-sm">
+          <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-3 text-center text-sm text-yellow-800">
+            💡 Hint: {riddle.hint}
+          </div>
+          <div className="flex gap-2 w-full">
+            <Input
+              value={guess}
+              onChange={(e) => setGuess(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && guess && checkAnswer()}
+              placeholder="Your answer..."
+              className="rounded-xl flex-1"
+            />
+            <Button
+              onClick={checkAnswer}
+              disabled={!guess}
+              className="bg-indigo-500 text-white rounded-full px-4"
+            >
+              ✅
+            </Button>
+          </div>
+        </div>
+      )}
+      {phase === "answer" && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="bg-green-50 border-2 border-green-300 rounded-2xl p-4 text-center">
+            <p className="font-bold text-green-700 text-lg">
+              Answer: {riddle.a}
+            </p>
+          </div>
+          <Button
+            data-ocid="riddle.next_button"
+            onClick={next}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full px-8"
+          >
+            Next Riddle 🧩
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 14. RANDOM KINDNESS CHALLENGE SPINNER
+// ─────────────────────────────────────────────────────────────────────────────
+const KINDNESS_CHALLENGES = [
+  {
+    emoji: "💌",
+    text: "Write a secret compliment note and leave it for someone to find.",
+  },
+  {
+    emoji: "📞",
+    text: "Call or message someone you haven't talked to in a while.",
+  },
+  {
+    emoji: "🌼",
+    text: "Pick a flower or draw one and give it to someone who looks sad.",
+  },
+  { emoji: "🧁", text: "Bake or make something and share it with a neighbor." },
+  {
+    emoji: "🤝",
+    text: "Introduce yourself to someone new at school or in your neighborhood.",
+  },
+  {
+    emoji: "🌟",
+    text: "Tell 3 people something you genuinely admire about them today.",
+  },
+  {
+    emoji: "🐾",
+    text: "Volunteer to walk a neighbor's dog or help care for an animal.",
+  },
+  {
+    emoji: "♻️",
+    text: "Pick up 10 pieces of litter in your neighborhood or yard.",
+  },
+  {
+    emoji: "📚",
+    text: "Donate a book you've already read to a library or school.",
+  },
+  {
+    emoji: "🎨",
+    text: "Make a piece of art for someone and give it away — no strings attached.",
+  },
+  {
+    emoji: "🌍",
+    text: "Write a thank-you letter to someone who has helped you before.",
+  },
+  {
+    emoji: "🦋",
+    text: "Spend 10 minutes really listening to someone without checking your phone.",
+  },
+  {
+    emoji: "🎁",
+    text: "Give away something you own that someone else would love more.",
+  },
+  { emoji: "😊", text: "Smile at every single person you walk past today." },
+  {
+    emoji: "🍪",
+    text: "Bake cookies and deliver them to a teacher, neighbor, or friend.",
+  },
+];
+
+export function KindnessChallengeSpinner() {
+  const [current, setCurrent] = useState<
+    null | (typeof KINDNESS_CHALLENGES)[0]
+  >(null);
+  const [spinning, setSpinning] = useState(false);
+  const [completed, setCompleted] = useState<string[]>([]);
+  const [angle, setAngle] = useState(0);
+
+  const spin = () => {
+    setSpinning(true);
+    const spins = 1080 + Math.floor(Math.random() * 360);
+    setAngle((a) => a + spins);
+    setTimeout(() => {
+      const pick =
+        KINDNESS_CHALLENGES[
+          Math.floor(Math.random() * KINDNESS_CHALLENGES.length)
+        ];
+      setCurrent(pick);
+      setSpinning(false);
+    }, 1200);
+  };
+
+  const done = () => {
+    if (current) {
+      setCompleted((c) => [...c, current.emoji]);
+      toast(`${current.emoji} Amazing! You did a kindness today!`);
+      setCurrent(null);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-5 p-6">
+      <div className="text-center">
+        <div className="text-4xl mb-1">💖</div>
+        <h2 className="text-2xl font-bold text-rose-500">
+          Kindness Challenge Spinner
+        </h2>
+        <p className="text-sm text-gray-500">
+          Completed: {completed.join(" ") || "none yet"}
+        </p>
+      </div>
+      <button
+        type="button"
+        className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-400 via-rose-400 to-orange-400 flex items-center justify-center text-5xl shadow-xl cursor-pointer select-none border-none p-0"
+        style={{
+          transform: `rotate(${angle}deg)`,
+          transition: spinning
+            ? "transform 1.2s cubic-bezier(0.17,0.67,0.12,0.99)"
+            : "none",
+        }}
+        onClick={!spinning && !current ? spin : undefined}
+      >
+        💖
+      </button>
+      {!current && !spinning && (
+        <Button
+          data-ocid="kindness.spin_button"
+          onClick={spin}
+          className="bg-rose-500 hover:bg-rose-600 text-white rounded-full px-8 text-lg"
+        >
+          Spin for a Kindness! ✨
+        </Button>
+      )}
+      {spinning && (
+        <p className="text-rose-400 animate-pulse text-lg font-bold">
+          Spinning... 💫
+        </p>
+      )}
+      {current && !spinning && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 text-center">
+            <div className="text-4xl mb-2">{current.emoji}</div>
+            <p className="text-rose-800 font-semibold text-lg">
+              {current.text}
+            </p>
+          </div>
+          <div className="flex gap-3 w-full">
+            <Button
+              data-ocid="kindness.done_button"
+              onClick={done}
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded-full"
+            >
+              I Did It! 🌟
+            </Button>
+            <Button
+              data-ocid="kindness.skip_button"
+              variant="outline"
+              onClick={spin}
+              className="flex-1 rounded-full border-rose-300 text-rose-600"
+            >
+              Spin Again 🔄
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 15. EMOJI CODE BREAKER
+// ─────────────────────────────────────────────────────────────────────────────
+const EMOJI_CODES = [
+  {
+    code: "🌟💪🎯🔥",
+    answer: "star power goal fire",
+    hint: "Things that describe an amazing girl!",
+  },
+  {
+    code: "🌈🦋🌸🎉",
+    answer: "rainbow butterfly flower party",
+    hint: "Beautiful and fun things in nature",
+  },
+  {
+    code: "📚✏️🧠💡",
+    answer: "book pencil brain idea",
+    hint: "Things you use when you're learning",
+  },
+  {
+    code: "🎵🎤🎸🎶",
+    answer: "music microphone guitar notes",
+    hint: "All about music!",
+  },
+  {
+    code: "🏆🥇🌟👑",
+    answer: "trophy gold star crown",
+    hint: "You win these when you're the best!",
+  },
+  {
+    code: "🍕🍟🍦🎂",
+    answer: "pizza fries ice cream cake",
+    hint: "Yummy foods!",
+  },
+  { code: "🐶🐱🐠🐹", answer: "dog cat fish hamster", hint: "Popular pets!" },
+  {
+    code: "⚽🏀🎾🏊",
+    answer: "soccer basketball tennis swimming",
+    hint: "Sports girls love!",
+  },
+];
+
+const EMOJI_ALPHABET: Record<string, string> = {
+  A: "🍎",
+  B: "🐝",
+  C: "🌙",
+  D: "🐬",
+  E: "🌍",
+  F: "🌸",
+  G: "🍇",
+  H: "🏠",
+  I: "🍦",
+  J: "🌶️",
+  K: "🔑",
+  L: "🦁",
+  M: "🌙",
+  N: "⭐",
+  O: "🐙",
+  P: "🍑",
+  Q: "👑",
+  R: "🌹",
+  S: "⭐",
+  T: "🌴",
+  U: "☂️",
+  V: "🎻",
+  W: "🌊",
+  X: "❌",
+  Y: "🌻",
+  Z: "⚡",
+};
+
+export function EmojiCodeBreaker() {
+  const [tab, setTab] = useState<"decode" | "encode">("decode");
+  const [qIdx, setQIdx] = useState(() =>
+    Math.floor(Math.random() * EMOJI_CODES.length),
+  );
+  const [guess, setGuess] = useState("");
+  const [revealed, setRevealed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [encodeInput, setEncodeInput] = useState("");
+  const q = EMOJI_CODES[qIdx];
+
+  const checkDecode = () => {
+    const correct = q.answer.split(" ")[0];
+    if (guess.toLowerCase().includes(correct)) {
+      toast("🎉 You cracked the code!");
+      setScore((s) => s + 1);
+    } else {
+      toast("Keep trying — or reveal the answer!");
+    }
+    setRevealed(true);
+  };
+
+  const nextQ = () => {
+    setQIdx(Math.floor(Math.random() * EMOJI_CODES.length));
+    setGuess("");
+    setRevealed(false);
+  };
+
+  const encoded = encodeInput
+    .toUpperCase()
+    .split("")
+    .map((c) => EMOJI_ALPHABET[c] || (c === " " ? "  " : c))
+    .join("");
+
+  return (
+    <div className="flex flex-col gap-4 p-6">
+      <div className="text-center">
+        <div className="text-4xl mb-1">🔐</div>
+        <h2 className="text-2xl font-bold text-cyan-600">Emoji Code Breaker</h2>
+      </div>
+      <div className="flex gap-2 justify-center">
+        <button
+          type="button"
+          data-ocid="emojicode.decode_tab"
+          onClick={() => setTab("decode")}
+          className={`px-4 py-2 rounded-full font-semibold text-sm ${tab === "decode" ? "bg-cyan-500 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          🔍 Decode
+        </button>
+        <button
+          type="button"
+          data-ocid="emojicode.encode_tab"
+          onClick={() => setTab("encode")}
+          className={`px-4 py-2 rounded-full font-semibold text-sm ${tab === "encode" ? "bg-cyan-500 text-white" : "bg-gray-100 text-gray-600"}`}
+        >
+          ✍️ Encode
+        </button>
+      </div>
+      {tab === "decode" ? (
+        <div className="flex flex-col items-center gap-4 max-w-sm mx-auto w-full">
+          <p className="text-sm text-gray-500 text-center">
+            Score: {score} cracked
+          </p>
+          <div className="bg-cyan-50 border-2 border-cyan-200 rounded-2xl p-5 text-center">
+            <p className="text-xs text-cyan-500 mb-1">
+              Decode this emoji message:
+            </p>
+            <p className="text-4xl tracking-widest">{q.code}</p>
+            <p className="text-xs text-gray-400 mt-2 italic">Hint: {q.hint}</p>
+          </div>
+          {!revealed ? (
+            <div className="flex gap-2 w-full">
+              <Input
+                data-ocid="emojicode.input"
+                value={guess}
+                onChange={(e) => setGuess(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && guess && checkDecode()}
+                placeholder="What do the emojis mean?"
+                className="rounded-xl flex-1"
+              />
+              <Button
+                onClick={checkDecode}
+                disabled={!guess}
+                className="bg-cyan-500 text-white rounded-full px-4"
+              >
+                ✅
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div className="bg-green-50 border border-green-300 rounded-xl p-3 text-center w-full">
+                <p className="text-green-700 font-bold">Answer: {q.answer}</p>
+              </div>
+              <Button
+                data-ocid="emojicode.next_button"
+                onClick={nextQ}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white rounded-full px-8"
+              >
+                Next Code 🔐
+              </Button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-4 max-w-sm mx-auto w-full">
+          <p className="text-sm text-gray-600 text-center">
+            Type a message to turn it into emoji code!
+          </p>
+          <Input
+            data-ocid="emojicode.encode_input"
+            value={encodeInput}
+            onChange={(e) => setEncodeInput(e.target.value)}
+            placeholder="Type a word or name..."
+            className="rounded-xl"
+            maxLength={20}
+          />
+          {encodeInput && (
+            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4 text-center w-full">
+              <p className="text-xs text-yellow-600 mb-1">
+                Your secret emoji code:
+              </p>
+              <p className="text-3xl">{encoded}</p>
+            </div>
+          )}
+          <p className="text-xs text-gray-400 text-center">
+            Share this with a friend and see if they can crack it!
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 16. FORTUNE COOKIE GENERATOR
+// ─────────────────────────────────────────────────────────────────────────────
+const FORTUNES = [
+  [
+    "You will discover a hidden talent that surprises everyone — including yourself.",
+    "Lucky color: Gold ✨",
+  ],
+  [
+    "The best adventure of your life hasn't started yet. Get ready!",
+    "Lucky number: 7 🌟",
+  ],
+  [
+    "Someone around you secretly thinks you're the coolest person they know.",
+    "Lucky day: Saturday 🎉",
+  ],
+  [
+    "Your kindness today will come back to you multiplied by a hundred.",
+    "Lucky food: Pizza 🍕",
+  ],
+  [
+    "You have the power to change someone's day just by smiling at them.",
+    "Lucky word: Shine ☀️",
+  ],
+  [
+    "A dream you've been holding onto is closer to coming true than you think.",
+    "Lucky color: Purple 💜",
+  ],
+  [
+    "The friends you're making right now may be your friends for life.",
+    "Lucky number: 13 🍀",
+  ],
+  [
+    "You are braver than you believe and more talented than you know.",
+    "Lucky day: Friday 🌸",
+  ],
+  [
+    "Something exciting is coming in the next 7 days. Stay open to surprises!",
+    "Lucky color: Rainbow 🌈",
+  ],
+  [
+    "The world is better with you in it. Don't ever forget that.",
+    "Lucky word: Brave 💪",
+  ],
+  [
+    "Your creativity will solve a problem that has stumped everyone else.",
+    "Lucky number: 3 🎨",
+  ],
+  [
+    "An unexpected friendship is about to bloom. Say hello first!",
+    "Lucky food: Strawberries 🍓",
+  ],
+];
+
+export function FortuneCookieGenerator() {
+  const [fortune, setFortune] = useState<null | (typeof FORTUNES)[0]>(null);
+  const [cracking, setCracking] = useState(false);
+  const [cookieScale, setCookieScale] = useState(1);
+  const [count, setCount] = useState(0);
+
+  const crack = () => {
+    setCracking(true);
+    setCookieScale(1.3);
+    setTimeout(() => setCookieScale(0.1), 300);
+    setTimeout(() => {
+      setFortune(FORTUNES[Math.floor(Math.random() * FORTUNES.length)]);
+      setCracking(false);
+      setCookieScale(1);
+      setCount((c) => c + 1);
+    }, 800);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-6 p-6 min-h-[380px]">
+      <div className="text-center">
+        <div className="text-4xl mb-1">🥠</div>
+        <h2 className="text-2xl font-bold text-amber-600">
+          Fortune Cookie Generator
+        </h2>
+        <p className="text-sm text-gray-500">{count} fortunes cracked</p>
+      </div>
+      <button
+        type="button"
+        tabIndex={0}
+        className="text-8xl cursor-pointer select-none transition-transform duration-300 bg-transparent border-none p-0"
+        style={{ transform: `scale(${cookieScale})` }}
+        onClick={!cracking ? crack : undefined}
+      >
+        🥠
+      </button>
+      {cracking && (
+        <p className="text-amber-400 animate-pulse text-xl font-bold">
+          Cracking... ✨
+        </p>
+      )}
+      {fortune && !cracking && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 text-center shadow-lg">
+            <p className="text-amber-900 font-semibold text-lg leading-relaxed mb-3">
+              "{fortune[0]}"
+            </p>
+            <p className="text-amber-600 text-sm">{fortune[1]}</p>
+          </div>
+          <Button
+            data-ocid="fortune.crack_button"
+            onClick={crack}
+            className="bg-amber-500 hover:bg-amber-600 text-white rounded-full px-8"
+          >
+            Crack Another Cookie 🥠
+          </Button>
+        </div>
+      )}
+      {!fortune && !cracking && (
+        <Button
+          data-ocid="fortune.first_button"
+          onClick={crack}
+          className="bg-amber-500 hover:bg-amber-600 text-white rounded-full px-8 text-lg"
+        >
+          Crack Your Fortune Cookie! 🥠
+        </Button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 17. SPEED DRAWING CHALLENGE
+// ─────────────────────────────────────────────────────────────────────────────
+const DRAW_PROMPTS = [
+  "A flying unicorn 🦄",
+  "A robot eating pizza 🤖🍕",
+  "A mermaid with sunglasses 🧜‍♀️😎",
+  "A dinosaur wearing a crown 🦖👑",
+  "A cat doing yoga 🧘‍♀️🐱",
+  "A house made of candy 🍬🏠",
+  "A girl with flower hair 💐",
+  "A turtle skateboarding 🐢🛹",
+  "A cloud with a face 😶‍🌫️",
+  "A puppy in a teacup 🐶☕",
+  "A witch stirring a rainbow potion 🌈🧙‍♀️",
+  "A panda in a ballgown 🐼👗",
+];
+
+export function SpeedDrawingChallenge() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [drawing, setDrawing] = useState(false);
+  const [prompt, setPrompt] = useState<null | string>(null);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [phase, setPhase] = useState<"start" | "drawing" | "done">("start");
+  const [color, setColor] = useState("#e91e8c");
+  const [brushSize, setBrushSize] = useState(4);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastPos = useRef<{ x: number; y: number } | null>(null);
+
+  const startChallenge = () => {
+    setPrompt(DRAW_PROMPTS[Math.floor(Math.random() * DRAW_PROMPTS.length)]);
+    setTimeLeft(60);
+    setPhase("drawing");
+    const ctx = canvasRef.current?.getContext("2d");
+    if (ctx && canvasRef.current) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+    timerRef.current = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(timerRef.current!);
+          setPhase("done");
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+  };
+
+  const getPos = (
+    e: React.MouseEvent | React.TouchEvent,
+    canvas: HTMLCanvasElement,
+  ) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if ("touches" in e) {
+      return {
+        x: (e.touches[0].clientX - rect.left) * scaleX,
+        y: (e.touches[0].clientY - rect.top) * scaleY,
+      };
+    }
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  };
+
+  const draw = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!drawing || phase !== "drawing") return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const pos = getPos(e, canvas);
+    if (lastPos.current) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = "round";
+      ctx.moveTo(lastPos.current.x, lastPos.current.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    lastPos.current = pos;
+  };
+
+  const clearCanvas = () => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (ctx && canvasRef.current) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+  };
+
+  const again = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setPhase("start");
+    setPrompt(null);
+    setTimeLeft(60);
+  };
+
+  const COLORS = [
+    "#e91e8c",
+    "#9c27b0",
+    "#2196f3",
+    "#4caf50",
+    "#ff9800",
+    "#f44336",
+    "#000000",
+    "#ffffff",
+  ];
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-4">
+      <div className="text-center">
+        <div className="text-4xl mb-1">🎨</div>
+        <h2 className="text-2xl font-bold text-fuchsia-600">
+          Speed Drawing Challenge
+        </h2>
+      </div>
+      {phase === "start" && (
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-gray-600 text-center max-w-xs">
+            You'll get a random prompt and 60 seconds to draw it. Ready?
+          </p>
+          <Button
+            data-ocid="draw.start_button"
+            onClick={startChallenge}
+            className="bg-fuchsia-500 hover:bg-fuchsia-600 text-white rounded-full px-8 text-lg"
+          >
+            Start Drawing! 🖍️
+          </Button>
+        </div>
+      )}
+      {(phase === "drawing" || phase === "done") && (
+        <div className="flex flex-col items-center gap-3 w-full max-w-sm">
+          <div className="flex items-center justify-between w-full">
+            <div className="bg-fuchsia-100 rounded-xl px-3 py-1 text-sm font-bold text-fuchsia-700">
+              Draw: {prompt}
+            </div>
+            <div
+              className={`text-lg font-bold ${timeLeft <= 10 ? "text-red-500 animate-pulse" : "text-gray-600"}`}
+            >
+              ⏱ {timeLeft}s
+            </div>
+          </div>
+          <canvas
+            ref={canvasRef}
+            width={400}
+            height={300}
+            data-ocid="draw.canvas_target"
+            className="border-2 border-fuchsia-200 rounded-2xl bg-white w-full touch-none cursor-crosshair"
+            onMouseDown={(e) => {
+              setDrawing(true);
+              lastPos.current = getPos(e, canvasRef.current!);
+            }}
+            onMouseMove={draw}
+            onMouseUp={() => {
+              setDrawing(false);
+              lastPos.current = null;
+            }}
+            onMouseLeave={() => {
+              setDrawing(false);
+              lastPos.current = null;
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              setDrawing(true);
+              lastPos.current = getPos(e, canvasRef.current!);
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault();
+              draw(e);
+            }}
+            onTouchEnd={() => {
+              setDrawing(false);
+              lastPos.current = null;
+            }}
+          />
+          <div className="flex gap-2 items-center flex-wrap justify-center">
+            {COLORS.map((c) => (
+              <button
+                type="button"
+                key={c}
+                onClick={() => setColor(c)}
+                className="w-7 h-7 rounded-full border-2 transition-transform hover:scale-110"
+                style={{
+                  background: c,
+                  borderColor: color === c ? "#6d28d9" : "#ddd",
+                }}
+              />
+            ))}
+            <input
+              type="range"
+              min={2}
+              max={20}
+              value={brushSize}
+              onChange={(e) => setBrushSize(Number(e.target.value))}
+              className="w-16 accent-fuchsia-500"
+            />
+            <button
+              type="button"
+              onClick={clearCanvas}
+              className="text-xs text-gray-500 underline"
+            >
+              Clear
+            </button>
+          </div>
+          {phase === "done" && (
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div className="bg-fuchsia-50 border-2 border-fuchsia-300 rounded-xl p-3 text-center">
+                <p className="font-bold text-fuchsia-700 text-lg">
+                  Time's up! Great job! 🎉
+                </p>
+              </div>
+              <Button
+                data-ocid="draw.again_button"
+                onClick={again}
+                className="bg-fuchsia-500 hover:bg-fuchsia-600 text-white rounded-full px-8"
+              >
+                Try Another Prompt! 🎨
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 18. GUESS THE ANIMAL (20 QUESTIONS)
+// ─────────────────────────────────────────────────────────────────────────────
+const ANIMALS = [
+  {
+    name: "Elephant",
+    clues: [
+      "I'm the largest land animal",
+      "I never forget things",
+      "I spray water with my nose",
+      "I have big floppy ears",
+      "My skin is grey and wrinkly",
+    ],
+  },
+  {
+    name: "Penguin",
+    clues: [
+      "I wear a tuxedo of feathers",
+      "I can't fly but I swim great",
+      "I live where it's icy cold",
+      "I waddle when I walk",
+      "I love fish for dinner",
+    ],
+  },
+  {
+    name: "Giraffe",
+    clues: [
+      "I'm the tallest animal alive",
+      "I have a super long neck",
+      "I eat leaves from treetops",
+      "I have orange and brown patches",
+      "My tongue is purple and long",
+    ],
+  },
+  {
+    name: "Octopus",
+    clues: [
+      "I have 8 wiggly arms",
+      "I live deep in the ocean",
+      "I can change my color",
+      "I squirt ink when scared",
+      "I'm very, very smart",
+    ],
+  },
+  {
+    name: "Cheetah",
+    clues: [
+      "I'm the fastest land animal",
+      "I have black spots on gold fur",
+      "I roar -- wait, actually I chirp!",
+      "I sprint to catch my dinner",
+      "I live on the African savanna",
+    ],
+  },
+  {
+    name: "Flamingo",
+    clues: [
+      "I stand on one leg to rest",
+      "I'm bright pink from what I eat",
+      "I have a curved beak",
+      "I live near salty lakes",
+      "I'm a very tall bird",
+    ],
+  },
+  {
+    name: "Koala",
+    clues: [
+      "I sleep up to 22 hours a day",
+      "I live in Australia",
+      "I eat only eucalyptus leaves",
+      "I carry my baby in a pouch",
+      "I look like a little bear",
+    ],
+  },
+  {
+    name: "Dolphin",
+    clues: [
+      "I'm one of the smartest animals",
+      "I jump out of the ocean to play",
+      "I communicate by clicking and whistling",
+      "I breathe air through a hole on top",
+      "I love riding waves next to boats",
+    ],
+  },
+];
+
+export function GuessTheAnimal() {
+  const [animalIdx, setAnimalIdx] = useState(() =>
+    Math.floor(Math.random() * ANIMALS.length),
+  );
+  const [clueIdx, setClueIdx] = useState(0);
+  const [guess, setGuess] = useState("");
+  const [phase, setPhase] = useState<"playing" | "won" | "lost">("playing");
+  const [guesses, setGuesses] = useState<string[]>([]);
+  const animal = ANIMALS[animalIdx];
+
+  const submitGuess = () => {
+    if (!guess.trim()) return;
+    const g = guess.trim();
+    setGuesses((gs) => [...gs, g]);
+    setGuess("");
+    if (g.toLowerCase() === animal.name.toLowerCase()) {
+      setPhase("won");
+    } else if (clueIdx < animal.clues.length - 1) {
+      setClueIdx((c) => c + 1);
+      toast("Not quite! Here's another clue... 🔍");
+    } else {
+      setPhase("lost");
+    }
+  };
+
+  const reset = () => {
+    setAnimalIdx(Math.floor(Math.random() * ANIMALS.length));
+    setClueIdx(0);
+    setGuess("");
+    setPhase("playing");
+    setGuesses([]);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-5 p-6 min-h-[380px]">
+      <div className="text-center">
+        <div className="text-4xl mb-1">🐾</div>
+        <h2 className="text-2xl font-bold text-emerald-600">
+          Guess the Animal!
+        </h2>
+        <p className="text-sm text-gray-500">
+          Clue {clueIdx + 1} of {animal.clues.length}
+        </p>
+      </div>
+      <div className="flex flex-col gap-2 max-w-sm w-full">
+        {animal.clues.slice(0, clueIdx + 1).map((clue, i) => (
+          <div
+            key={clue}
+            className={`bg-emerald-50 border rounded-xl px-4 py-2 text-sm ${i === clueIdx ? "border-emerald-400 font-semibold text-emerald-800" : "border-emerald-100 text-gray-500"}`}
+          >
+            {i + 1}. {clue}
+          </div>
+        ))}
+      </div>
+      {phase === "playing" && (
+        <div className="flex gap-2 w-full max-w-sm">
+          <Input
+            data-ocid="animal.input"
+            value={guess}
+            onChange={(e) => setGuess(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && submitGuess()}
+            placeholder="What animal am I?"
+            className="rounded-xl flex-1"
+          />
+          <Button
+            onClick={submitGuess}
+            disabled={!guess}
+            className="bg-emerald-500 text-white rounded-full px-4"
+          >
+            Guess!
+          </Button>
+        </div>
+      )}
+      {guesses.length > 0 && phase === "playing" && (
+        <p className="text-xs text-gray-400">
+          Wrong guesses: {guesses.join(", ")}
+        </p>
+      )}
+      {phase === "won" && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="bg-green-50 border-2 border-green-400 rounded-2xl p-4 text-center">
+            <p className="text-2xl">🎉</p>
+            <p className="font-bold text-green-700">
+              You got it! It was a {animal.name}!
+            </p>
+            <p className="text-sm text-gray-500">
+              You figured it out in {guesses.length} guess
+              {guesses.length !== 1 ? "es" : ""}!
+            </p>
+          </div>
+          <Button
+            data-ocid="animal.play_button"
+            onClick={reset}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-8"
+          >
+            Play Again! 🐾
+          </Button>
+        </div>
+      )}
+      {phase === "lost" && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="bg-orange-50 border-2 border-orange-300 rounded-2xl p-4 text-center">
+            <p className="font-bold text-orange-700">
+              The answer was: {animal.name}! 🐾
+            </p>
+            <p className="text-sm text-gray-500">Better luck next time!</p>
+          </div>
+          <Button
+            data-ocid="animal.retry_button"
+            onClick={reset}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-8"
+          >
+            Try Another Animal! 🔍
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 19. FRIENDSHIP CHALLENGE GENERATOR
+// ─────────────────────────────────────────────────────────────────────────────
+const FRIENDSHIP_CHALLENGES = [
+  {
+    title: "The Compliment Blitz",
+    steps: [
+      "Tell your BFF 5 things you love about her in under 2 minutes",
+      "Take a silly selfie together to celebrate",
+      "Text one of those compliments to someone else today",
+    ],
+  },
+  {
+    title: "Memory Jar",
+    steps: [
+      "Write down your 3 favorite memories together on paper",
+      "Fold them up and put them in a jar or box",
+      "Take turns reading them out loud and reliving the moment",
+    ],
+  },
+  {
+    title: "Swap Day",
+    steps: [
+      "Pick one of your favorite hobbies to teach your friend",
+      "Spend 15 minutes showing her how to do it",
+      "Then let her teach you something she loves",
+    ],
+  },
+  {
+    title: "Dream Big Together",
+    steps: [
+      "Each write down your biggest dream for the future",
+      "Share it with each other without any judgment",
+      "Make a plan: one tiny step each of you can take this week",
+    ],
+  },
+  {
+    title: "Acts of Kindness Duo",
+    steps: [
+      "Pick a random person to do something nice for today",
+      "Do your kind act separately then meet up to share the story",
+      "Vote on whose story was the most heartwarming",
+    ],
+  },
+  {
+    title: "30-Second Dance Battle",
+    steps: [
+      "Each person picks a song that represents them",
+      "You each get 30 seconds to freestyle dance to your song",
+      "Score each other out of 10 for confidence, creativity, and fun",
+    ],
+  },
+  {
+    title: "The Letter Exchange",
+    steps: [
+      "Write a letter to your BFF about how much she means to you",
+      "Seal it and give it to her to open later when she needs it",
+      "Ask her to write one back that you can save for a bad day",
+    ],
+  },
+];
+
+export function FriendshipChallengeGenerator() {
+  const [idx, setIdx] = useState<null | number>(null);
+  const [step, setStep] = useState(0);
+  const [done, setDone] = useState(false);
+  const [completed, setCompleted] = useState(0);
+
+  const pick = () => {
+    setIdx(Math.floor(Math.random() * FRIENDSHIP_CHALLENGES.length));
+    setStep(0);
+    setDone(false);
+  };
+
+  const nextStep = () => {
+    if (!challenge) return;
+    if (step < challenge.steps.length - 1) {
+      setStep((s) => s + 1);
+    } else {
+      setDone(true);
+      setCompleted((c) => c + 1);
+    }
+  };
+
+  const challenge = idx !== null ? FRIENDSHIP_CHALLENGES[idx] : null;
+
+  return (
+    <div className="flex flex-col items-center gap-5 p-6 min-h-[380px]">
+      <div className="text-center">
+        <div className="text-4xl mb-1">👭</div>
+        <h2 className="text-2xl font-bold text-violet-600">
+          Friendship Challenge
+        </h2>
+        <p className="text-sm text-gray-500">
+          {completed} challenges completed
+        </p>
+      </div>
+      {!challenge && (
+        <div className="flex flex-col items-center gap-4 max-w-sm text-center">
+          <p className="text-gray-600">
+            Get a random 3-step challenge to do with your best friend. Grab her
+            and let's go!
+          </p>
+          <Button
+            data-ocid="friendship.generate_button"
+            onClick={pick}
+            className="bg-violet-500 hover:bg-violet-600 text-white rounded-full px-8 text-lg"
+          >
+            Generate a Challenge! 🎲
+          </Button>
+        </div>
+      )}
+      {challenge && !done && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="bg-violet-50 border-2 border-violet-300 rounded-2xl p-4 text-center w-full">
+            <p className="text-violet-700 font-bold text-lg mb-1">
+              {challenge.title}
+            </p>
+            <p className="text-xs text-gray-400">
+              Step {step + 1} of {challenge.steps.length}
+            </p>
+          </div>
+          <div className="bg-white border-2 border-violet-200 rounded-2xl p-5 w-full text-center">
+            <p className="text-gray-800 text-lg">{challenge.steps[step]}</p>
+          </div>
+          <Progress
+            value={((step + 1) / challenge.steps.length) * 100}
+            className="w-full h-2"
+          />
+          <Button
+            data-ocid="friendship.next_button"
+            onClick={nextStep}
+            className="bg-violet-500 hover:bg-violet-600 text-white rounded-full px-8"
+          >
+            {step < challenge.steps.length - 1
+              ? "Done! Next Step ➡️"
+              : "We Finished! 🎉"}
+          </Button>
+        </div>
+      )}
+      {done && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="bg-violet-50 border-2 border-violet-400 rounded-2xl p-5 text-center">
+            <p className="text-2xl mb-2">🌟</p>
+            <p className="font-bold text-violet-700 text-xl">
+              Challenge Complete!
+            </p>
+            <p className="text-gray-500 text-sm mt-1">
+              You and your BFF are unstoppable!
+            </p>
+          </div>
+          <Button
+            data-ocid="friendship.again_button"
+            onClick={pick}
+            className="bg-violet-500 hover:bg-violet-600 text-white rounded-full px-8"
+          >
+            Try Another Challenge! 👭
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 20. COMPLIMENT BATTLE (PvP STYLE)
+// ─────────────────────────────────────────────────────────────────────────────
+const COMPLIMENT_PACKS = {
+  Brave: [
+    "You face fears like a lion.",
+    "You step up when others step back.",
+    "Your courage lights up the room.",
+    "You never give up, ever.",
+    "You're braver than you know.",
+    "You tackle hard things head-on.",
+  ],
+  Creative: [
+    "Your ideas are out of this world.",
+    "You see art in everything.",
+    "Your imagination has no limits.",
+    "You turn ordinary into extraordinary.",
+    "Your creativity is your superpower.",
+    "You think in colors nobody else can see.",
+  ],
+  Funny: [
+    "You make everyone laugh instantly.",
+    "Your sense of humor is one in a million.",
+    "Life is brighter because you're in it.",
+    "You turn any bad day around.",
+    "You could make a grumpy cat smile.",
+    "Your laugh is contagious in the best way.",
+  ],
+  Smart: [
+    "You figure things out so fast.",
+    "Your brain is absolutely amazing.",
+    "You ask the best questions.",
+    "You learn things faster than anyone.",
+    "Your ideas always make sense.",
+    "You're going to change the world with your mind.",
+  ],
+};
+
+type PackKey = keyof typeof COMPLIMENT_PACKS;
+
+export function ComplimentBattle() {
+  const [player1, setPlayer1] = useState("");
+  const [player2, setPlayer2] = useState("");
+  const [pack, setPack] = useState<PackKey>("Brave");
+  const [phase, setPhase] = useState<"setup" | "battle" | "done">("setup");
+  const [round, setRound] = useState(0);
+  const [scores, setScores] = useState([0, 0]);
+  const [current, setCurrent] = useState<{ p: number; comp: string } | null>(
+    null,
+  );
+
+  const start = () => {
+    if (!player1.trim() || !player2.trim()) {
+      toast("Enter both players' names!");
+      return;
+    }
+    setPhase("battle");
+    setRound(0);
+    setScores([0, 0]);
+    nextCompliment(0, [0, 0]);
+  };
+
+  const nextCompliment = (r: number, _s: number[]) => {
+    const p = (r % 2) as 0 | 1;
+    const comps = COMPLIMENT_PACKS[pack];
+    const comp = comps[Math.floor(Math.random() * comps.length)];
+    setCurrent({ p, comp });
+  };
+
+  const vote = (winner: 0 | 1) => {
+    const newScores = [...scores];
+    newScores[winner] += 1;
+    setScores(newScores);
+    if (round >= 5) {
+      setPhase("done");
+      return;
+    }
+    const newRound = round + 1;
+    setRound(newRound);
+    nextCompliment(newRound, newScores);
+  };
+
+  const names = [player1 || "Player 1", player2 || "Player 2"];
+
+  return (
+    <div className="flex flex-col items-center gap-5 p-6 min-h-[380px]">
+      <div className="text-center">
+        <div className="text-4xl mb-1">💬</div>
+        <h2 className="text-2xl font-bold text-pink-600">Compliment Battle!</h2>
+        <p className="text-sm text-gray-500">
+          Read compliments and vote who deserves it most
+        </p>
+      </div>
+      {phase === "setup" && (
+        <div className="flex flex-col gap-4 max-w-sm w-full">
+          <Input
+            data-ocid="compliment.p1_input"
+            value={player1}
+            onChange={(e) => setPlayer1(e.target.value)}
+            placeholder="Player 1 name"
+            className="rounded-xl"
+          />
+          <Input
+            data-ocid="compliment.p2_input"
+            value={player2}
+            onChange={(e) => setPlayer2(e.target.value)}
+            placeholder="Player 2 name"
+            className="rounded-xl"
+          />
+          <div className="flex gap-2 flex-wrap justify-center">
+            {(Object.keys(COMPLIMENT_PACKS) as PackKey[]).map((p) => (
+              <button
+                type="button"
+                key={p}
+                data-ocid={`compliment.pack.${p.toLowerCase()}`}
+                onClick={() => setPack(p)}
+                className={`px-3 py-1 rounded-full text-sm font-semibold border-2 ${pack === p ? "bg-pink-500 text-white border-pink-500" : "border-pink-200 text-pink-600"}`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+          <Button
+            data-ocid="compliment.start_button"
+            onClick={start}
+            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full"
+          >
+            Start Battle! ⚡
+          </Button>
+        </div>
+      )}
+      {phase === "battle" && current && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="flex justify-between w-full text-sm font-bold text-gray-600">
+            <span>Round {round + 1}/6</span>
+            <span>
+              {names[0]}: {scores[0]} | {names[1]}: {scores[1]}
+            </span>
+          </div>
+          <div className="bg-pink-50 border-2 border-pink-300 rounded-2xl p-5 text-center">
+            <p className="text-pink-800 font-semibold text-xl">
+              "{current.comp}"
+            </p>
+          </div>
+          <p className="text-gray-600 font-medium">
+            Who does this describe best?
+          </p>
+          <div className="grid grid-cols-2 gap-3 w-full">
+            {names.map((name, i) => (
+              <Button
+                key={names[i]}
+                data-ocid={`compliment.vote.${i + 1}`}
+                onClick={() => vote(i as 0 | 1)}
+                className={`rounded-full ${i === 0 ? "bg-purple-500 hover:bg-purple-600" : "bg-orange-500 hover:bg-orange-600"} text-white`}
+              >
+                {name} 💖
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+      {phase === "done" && (
+        <div className="flex flex-col items-center gap-4 max-w-sm w-full">
+          <div className="bg-pink-50 border-2 border-pink-400 rounded-2xl p-5 text-center w-full">
+            <p className="text-2xl mb-2">🏆</p>
+            <p className="font-bold text-pink-700 text-xl">
+              {scores[0] > scores[1]
+                ? `${names[0]} wins!`
+                : scores[1] > scores[0]
+                  ? `${names[1]} wins!`
+                  : "It's a tie!"}
+            </p>
+            <p className="text-gray-500 text-sm mt-1">
+              {names[0]}: {scores[0]} pts | {names[1]}: {scores[1]} pts
+            </p>
+            <p className="text-pink-500 text-sm mt-2">
+              But honestly? You're BOTH amazing. 💖
+            </p>
+          </div>
+          <Button
+            data-ocid="compliment.restart_button"
+            onClick={() => {
+              setPhase("setup");
+              setScores([0, 0]);
+              setRound(0);
+            }}
+            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-8"
+          >
+            Play Again! 🎉
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
